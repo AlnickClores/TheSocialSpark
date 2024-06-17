@@ -45,7 +45,7 @@ const Create = () => {
           </div>
           <div className="mt-5">
             <button className="bg-[#bb86fc] px-5 py-1 rounded-md text-sm font-bold">
-              Upload
+              Upload Post
             </button>
           </div>
         </div>
