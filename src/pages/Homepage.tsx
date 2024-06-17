@@ -6,11 +6,14 @@ const Homepage = () => {
   return (
     <div>
       <Navbar />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
+      <div className="p-3">
+        <h1 className="text-xl font-bold mt-3 mb-10">Home Feed</h1>
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+      </div>
     </div>
   );
 };

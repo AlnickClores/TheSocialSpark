@@ -19,18 +19,18 @@ const Post = () => {
   };
 
   return (
-    <div className="m-2 py-3 px-1 bg-[#121212] rounded-xl">
-      <div className="flex">
-        <User className="h-9 w-10 text-[#bb86fc] fill-current" />
+    <div className="my-2 py-3 px-1 bg-[#121212] rounded-xl">
+      <div className="flex items-center">
+        <User className="h-8 w-10 text-[#bb86fc] fill-current" />
         <div className="ml-2">
-          <h1 className="font-bold">
+          <h1 className="font-bold text-md">
             {users[0].firstname} {users[0].lastname}{" "}
           </h1>
           <p className="text-slate-300 text-sm">13/06/2024</p>
         </div>
       </div>
       <div className="p-1">
-        <span className="font-center">
+        <span className="font-center text-sm">
           Hello Everyone. This is a placeholder post. Lorem ipsum dolor sit amet
           consectetur adipisicing elit. Magni nisi nesciunt in sint nobis
           doloremque fugiat laboriosam velit libero! Quam fugit beatae voluptas
@@ -40,14 +40,14 @@ const Post = () => {
       <div className="flex justify-between mt-3 px-2">
         {!starred ? (
           <img
-            className="h-6 w-6"
+            className="h-5 w-5"
             src={starRegular}
             alt="star"
             onClick={handleStar}
           />
         ) : (
           <img
-            className="h-6 w-6"
+            className="h-5 w-5"
             src={starFilled}
             alt="star"
             onClick={handleStar}
@@ -56,14 +56,14 @@ const Post = () => {
 
         {!saved ? (
           <img
-            className="h-6 w-6"
+            className="h-5 w-5"
             src={bookmarkRegular}
             alt="bookmark"
             onClick={handleSave}
           />
         ) : (
           <img
-            className="h-6 w-6"
+            className="h-5 w-5"
             src={bookmarkFilled}
             alt="bookmark"
             onClick={handleSave}
