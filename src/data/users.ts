@@ -2,19 +2,22 @@ export const users = [
   {
     firstname: "Alnick",
     lastname: "Clores",
-    gender: "male",
+    username: "Knotz",
     email: "aelnickclores@gmail.com",
+    bio: "Hello this is my Bio",
   },
   {
     firstname: "Selena",
     lastname: "Gomez",
-    gender: "female",
+    username: "IDK",
     email: "selenagomez@gmail.com",
+    bio: "Hello this is my Bio",
   },
   {
     firstname: "Wardell Stephen",
     lastname: "Curry",
-    gender: "male",
+    username: "SC30",
     email: "sc30@gmail.com",
+    bio: "Hello this is my Bio",
   },
 ];
