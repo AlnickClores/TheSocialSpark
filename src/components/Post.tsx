@@ -19,7 +19,7 @@ const Post = () => {
   };
 
   return (
-    <div className="my-2 py-3 px-1 bg-[#121212] rounded-xl">
+    <div className="my-2 py-3 px-1 bg-[#121212] rounded-xl border border-gray-600">
       <div className="flex items-center">
         <User className="h-8 w-10 text-[#bb86fc] fill-current" />
         <div className="ml-2">
