@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <>
-      <div className="flex items-center justify-between bg-[#121212] px-3 py-4">
+      <div className="flex items-center justify-between bg-[#121212] px-3 py-4 sticky top-0">
         <h1 className="text-lg font-bold">The SocialSpark</h1>
         <Link to="/profile">
           <User className="w-5 h-5 text-[#bb86fc] fill-current" />
