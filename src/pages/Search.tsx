@@ -1,8 +1,7 @@
-// Search.tsx (updated for passing onClose to Modal)
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import RecentSearch from "../components/RecentSearch";
-import Modal from "../components/Modal";
+import RecentSearchModal from "../components/modals/RecentSearchModal";
 
 const Search = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -34,7 +33,7 @@ const Search = () => {
             <RecentSearch openModal={openModal} setOpenModal={setOpenModal} />
             <RecentSearch openModal={openModal} setOpenModal={setOpenModal} />
           </div>
-          {openModal && <Modal onClose={handleCloseModal} />}
+          {openModal && <RecentSearchModal onClose={handleCloseModal} />}
         </div>
       </div>
     </div>

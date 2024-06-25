@@ -1,11 +1,10 @@
-// Modal.tsx
 import React from "react";
 
 interface ModalProps {
   onClose: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose }) => {
+const RecentSearchModal: React.FC<ModalProps> = ({ onClose }) => {
   const handleDelete = () => {
     onClose();
   };
@@ -37,4 +36,4 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   );
 };
 
-export default Modal;
+export default RecentSearchModal;

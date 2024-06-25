@@ -5,6 +5,7 @@ import { ReactComponent as User } from "../assets/icons/user-solid.svg";
 import { ReactComponent as Location } from "../assets/icons/location-dot-solid.svg";
 import { ReactComponent as Calendar } from "../assets/icons/calendar-regular.svg";
 import Post from "../components/Post";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<string>("posts");
@@ -12,6 +13,7 @@ const Profile = () => {
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
+
   return (
     <div>
       <Navbar />
@@ -19,9 +21,11 @@ const Profile = () => {
         <h1 className="text-xl font-bold mt-3 mb-10">Alnick Clores</h1>
         <div className="flex items-center justify-between">
           <User className="text-white fill-current w-16 h-16 border border-gray-600 rounded-full p-1" />
-          <button className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm">
-            Edit Profile
-          </button>
+          <Link to="/editprofile">
+            <button className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm">
+              Edit Profile
+            </button>
+          </Link>
         </div>
         <h1 className="text-xl font-semibold pb-3 mt-2 border-b border-gray-600">
           Knotz
