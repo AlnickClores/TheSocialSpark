@@ -6,6 +6,7 @@ import Create from "./pages/Create";
 import Saved from "./pages/Saved";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
+import Login from "./pages/Login";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Homepage /> },
@@ -14,4 +15,5 @@ export const router = createBrowserRouter([
   { path: "/saved", element: <Saved /> },
   { path: "/profile", element: <Profile /> },
   { path: "/editprofile", element: <EditProfile /> },
+  { path: "/login", element: <Login /> },
 ]);
