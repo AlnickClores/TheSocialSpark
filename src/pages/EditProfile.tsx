@@ -29,10 +29,10 @@ const EditProfile = () => {
         </div>
         <div className="flex flex-col gap-5">
           <div className="flex flex-col">
-            <label className="text-gray-400">Name</label>
+            <label className="text-gray-400">Username</label>
             <input
               type="text"
-              placeholder="Alnick Clores"
+              placeholder="Knotz"
               className="border-b border-gray-600 bg-black text-white px-2 py-1 placeholder-white"
             />
           </div>

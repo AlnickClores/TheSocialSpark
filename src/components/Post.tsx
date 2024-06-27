@@ -23,9 +23,7 @@ const Post = () => {
       <div className="flex items-center">
         <User className="h-8 w-10 text-[#bb86fc] fill-current" />
         <div className="ml-2">
-          <h1 className="font-bold text-md">
-            {users[0].firstname} {users[0].lastname}{" "}
-          </h1>
+          <h1 className="font-bold text-md">{users[0].username}</h1>
           <p className="text-slate-300 text-sm">13/06/2024</p>
         </div>
       </div>
