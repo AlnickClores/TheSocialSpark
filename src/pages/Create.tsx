@@ -7,7 +7,7 @@ const Create = () => {
     <div>
       <Navbar />
       <div className="p-3">
-        <h1 className="text-xl font-bold mt-3 mb-10">Create Post</h1>
+        <h1 className="text-xl font-bold mt-5 mb-10">Create Post</h1>
         <div className="flex flex-col gap-3 mt-3">
           <div>
             <h1 className="font-semibold mb-2">Caption</h1>

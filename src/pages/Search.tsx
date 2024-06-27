@@ -14,7 +14,7 @@ const Search = () => {
     <div>
       <Navbar />
       <div className="p-3">
-        <h1 className="text-xl font-bold mt-3 mb-10">Add People</h1>
+        <h1 className="text-xl font-bold mt-5 mb-10">Add People</h1>
         <div className="flex gap-5">
           <input
             className="text-sm rounded-lg py-1 bg-[#121212] border border-gray-600 px-3"

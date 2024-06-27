@@ -7,7 +7,7 @@ const Homepage = () => {
     <div>
       <Navbar />
       <div className="p-3">
-        <h1 className="text-xl font-bold mt-3 mb-10">Home Feed</h1>
+        <h1 className="text-xl font-bold mt-5 mb-10">Home Feed</h1>
         <Post />
         <Post />
         <Post />

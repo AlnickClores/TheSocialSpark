@@ -7,7 +7,7 @@ const Saved = () => {
     <div>
       <Navbar />
       <div className="p-3">
-        <h1 className="text-xl font-bold mt-3 mb-10">Saved Posts</h1>
+        <h1 className="text-xl font-bold mt-5 mb-10">Saved Posts</h1>
         <div className="bg-[#121212] rounded-lg p-3 pb-0">
           <p className="text-sm">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum

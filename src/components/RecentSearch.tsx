@@ -18,7 +18,7 @@ const RecentSearch: React.FC<RecentSearchProps> = ({
   return (
     <div className="flex items-center justify-between my-4">
       <User className="w-7 h-7 text-[#bb86fc] fill-current" />
-      <p className="mr-auto ml-3">Alnick Clores</p>
+      <p className="mr-auto ml-4 font-semibold">Knotz</p>
       <Ellipsis
         className="w-5 h-5 text-white fill-current"
         onClick={toggleModal}
