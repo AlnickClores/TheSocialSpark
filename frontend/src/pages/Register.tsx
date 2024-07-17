@@ -23,7 +23,7 @@ const Register = () => {
         <RegistrationForm />
         <h1 className="text-sm text-center">
           Already have an account?{" "}
-          <Link to="/login" className="text-[#bb86fc] font-semibold underline">
+          <Link to="/" className="text-[#bb86fc] font-semibold underline">
             Sign in
           </Link>
         </h1>
