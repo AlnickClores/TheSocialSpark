@@ -1,14 +1,22 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const RegistrationForm: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const handleChange = (e: any) => {
+    setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const handleCheckPassword = () => {
-    if (password !== confirmPassword) {
+    if (user.password !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
       return false;
     }
@@ -22,7 +30,13 @@ const RegistrationForm: React.FC = () => {
     if (!checkPassword) {
       return;
     }
-    alert("Registration Successful.");
+
+    try {
+      await axios.post("http://localhost:3000/users/registration", user);
+      alert("Registration Successful.");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -31,8 +45,8 @@ const RegistrationForm: React.FC = () => {
         <label className="font-semibold mb-1">Username</label>
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          name="username"
+          onChange={handleChange}
           className="px-3 py-2 bg-[#121212] text-sm border border-gray-400"
           placeholder="Enter your username here..."
           required
@@ -42,8 +56,8 @@ const RegistrationForm: React.FC = () => {
         <label className="font-semibold mb-1">Email</label>
         <input
           type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          onChange={handleChange}
           className="px-3 py-2 bg-[#121212] text-sm border border-gray-400"
           placeholder="Enter your email here..."
           required
@@ -53,8 +67,8 @@ const RegistrationForm: React.FC = () => {
         <label className="font-semibold mb-1">Password</label>
         <input
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          onChange={handleChange}
           className="px-3 py-2 bg-[#121212] text-sm border border-gray-400"
           placeholder="Enter your password here..."
           required
