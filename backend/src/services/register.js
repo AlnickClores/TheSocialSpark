@@ -3,7 +3,7 @@ const connection = require("../database/connection");
 module.exports = async (username, email, password) => {
   try {
     const query =
-      "INSERT INTO user_tbl (username, email, password, bio, image) VALUES (?, ?, ?, NULL, NULL)";
+      "INSERT INTO user_tbl (username, email, password, bio, image, location) VALUES (?, ?, ?, NULL, NULL, NULL)";
 
     await connection.execute(query, [username, email, password]);
   } catch (error) {
