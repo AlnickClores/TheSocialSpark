@@ -1,26 +1,8 @@
-export function getCurrentDate() {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const currentDate = new Date();
-  const month = months[currentDate.getMonth()];
-  const day = currentDate.getDate();
-  const year = currentDate.getFullYear();
-
-  const formattedDate = `${month} ${day}, ${year}`;
-  formattedDate.toString();
-
-  return formattedDate;
-}
+export const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+  };
+  return date.toLocaleDateString(undefined, options);
+};
