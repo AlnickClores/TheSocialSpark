@@ -67,4 +67,28 @@ router.get("/user", async (req, res) => {
   }
 });
 
+router.put("/updateProfile", async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized: Token missing" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.id;
+    const { username, bio, location } = req.body;
+
+    await connection.execute(
+      "UPDATE user_tbl SET username = ?, bio = ?, location = ? WHERE userID = ?",
+      [username, bio, location, userId]
+    );
+
+    res.status(200).send({ message: "Profile Updated Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
