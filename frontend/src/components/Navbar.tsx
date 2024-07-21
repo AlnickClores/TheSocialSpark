@@ -17,7 +17,7 @@ const Navbar = () => {
       </div>
       <div className="flex w-full justify-between bg-[#121212] bottom-0 py-3 rounded-t-2xl fixed md:hidden">
         <div className="flex flex-col justify-center items-center">
-          <Link to="/">
+          <Link to="/homepage">
             {" "}
             <Home className="w-16 h-6 text-[#bb86fc] fill-current" />
           </Link>
