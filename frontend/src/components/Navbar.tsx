@@ -5,10 +5,14 @@ import { ReactComponent as Bookmark } from "../assets/icons/bookmark-solid.svg";
 import { ReactComponent as Search } from "../assets/icons/magnifying-glass-solid.svg";
 import { ReactComponent as Create } from "../assets/icons/plus-solid.svg";
 import { ReactComponent as User } from "../assets/icons/user-solid.svg";
+import LogoutButton from "./buttons/Logout";
 import { fetchUserData } from "../utils/api";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  const location = useLocation();
+  const currentPage = location.pathname;
+
   const [profileImage, setProfileImage] = useState("");
 
   useEffect(() => {
@@ -26,17 +30,21 @@ const Navbar = () => {
     <>
       <div className="flex items-center justify-between bg-[#121212] px-3 py-4 sticky top-0">
         <h1 className="text-lg font-bold">The SocialSpark</h1>
-        <Link to="/profile">
-          {profileImage ? (
-            <img
-              src={profileImage}
-              alt="profile image"
-              className="w-5 h-5 rounded-full"
-            />
-          ) : (
-            <User className="w-5 h-5 text-[#bb86fc] fill-current" />
-          )}
-        </Link>
+        {currentPage === "/profile" ? (
+          <LogoutButton />
+        ) : (
+          <Link to="/profile">
+            {profileImage ? (
+              <img
+                src={profileImage}
+                alt="profile image"
+                className="w-5 h-5 rounded-full"
+              />
+            ) : (
+              <User className="w-5 h-5 text-[#bb86fc] fill-current" />
+            )}
+          </Link>
+        )}
       </div>
       <div className="flex w-full justify-between bg-[#121212] bottom-0 py-3 rounded-t-2xl fixed md:hidden">
         <div className="flex flex-col justify-center items-center">

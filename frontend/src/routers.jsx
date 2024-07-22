@@ -8,14 +8,33 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PrivateRoute from "./components/PrivateRoute";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Login /> },
   { path: "/register", element: <Register /> },
-  { path: "/homepage", element: <Homepage /> },
-  { path: "/search", element: <Search /> },
-  { path: "/create", element: <Create /> },
-  { path: "/saved", element: <Saved /> },
-  { path: "/profile", element: <Profile /> },
-  { path: "/editprofile", element: <EditProfile /> },
+  {
+    path: "/homepage",
+    element: <PrivateRoute element={Homepage} />,
+  },
+  {
+    path: "/search",
+    element: <PrivateRoute element={Search} />,
+  },
+  {
+    path: "/create",
+    element: <PrivateRoute element={Create} />,
+  },
+  {
+    path: "/saved",
+    element: <PrivateRoute element={Saved} />,
+  },
+  {
+    path: "/profile",
+    element: <PrivateRoute element={Profile} />,
+  },
+  {
+    path: "/editprofile",
+    element: <PrivateRoute element={EditProfile} />,
+  },
 ]);
