@@ -1,18 +1,41 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { ReactComponent as Home } from "../assets/icons/house-solid.svg";
 import { ReactComponent as Bookmark } from "../assets/icons/bookmark-solid.svg";
 import { ReactComponent as Search } from "../assets/icons/magnifying-glass-solid.svg";
 import { ReactComponent as Create } from "../assets/icons/plus-solid.svg";
 import { ReactComponent as User } from "../assets/icons/user-solid.svg";
+import { fetchUserData } from "../utils/api";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const [profileImage, setProfileImage] = useState("");
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const data = await fetchUserData();
+        setProfileImage(data.image);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserData();
+  }, []);
   return (
     <>
       <div className="flex items-center justify-between bg-[#121212] px-3 py-4 sticky top-0">
         <h1 className="text-lg font-bold">The SocialSpark</h1>
         <Link to="/profile">
-          <User className="w-5 h-5 text-[#bb86fc] fill-current" />
+          {profileImage ? (
+            <img
+              src={profileImage}
+              alt="profile image"
+              className="w-5 h-5 rounded-full"
+            />
+          ) : (
+            <User className="w-5 h-5 text-[#bb86fc] fill-current" />
+          )}
         </Link>
       </div>
       <div className="flex w-full justify-between bg-[#121212] bottom-0 py-3 rounded-t-2xl fixed md:hidden">

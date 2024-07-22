@@ -12,6 +12,7 @@ const ProfileHeader = () => {
     bio: "",
     location: "",
     date_joined: "",
+    image: "",
   });
 
   useEffect(() => {
@@ -29,7 +30,16 @@ const ProfileHeader = () => {
   return (
     <div>
       <div className="flex items-center justify-between mt-5">
-        <User className="text-white fill-current w-16 h-16 border border-gray-600 rounded-full p-1" />
+        {userData.image ? (
+          <img
+            src={userData.image}
+            alt="Profile"
+            className="w-16 h-16 rounded-full"
+          />
+        ) : (
+          <User className="text-white fill-current w-16 h-16 border border-gray-600 rounded-full p-1" />
+        )}
+
         <Link to="/editprofile">
           <button className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm">
             Edit Profile
