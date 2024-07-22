@@ -1,6 +1,9 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const connection = require("../database/connection");
+const multer = require("multer");
+const path = require("path");
+const upload = require("../middleware/upload");
 require("dotenv").config();
 
 const router = express.Router();
@@ -60,6 +63,11 @@ router.get("/user", async (req, res) => {
     }
 
     const user = rows[0];
+
+    if (user.image) {
+      user.image = `http://localhost:3000/uploads/${user.image}`;
+    }
+
     res.status(200).send(user);
   } catch (error) {
     console.error("JWT verification error:", error);
@@ -67,7 +75,7 @@ router.get("/user", async (req, res) => {
   }
 });
 
-router.put("/updateProfile", async (req, res) => {
+router.put("/updateProfile", upload.single("image"), async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
@@ -78,10 +86,14 @@ router.put("/updateProfile", async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
     const { username, bio, location } = req.body;
+    let image = req.file ? req.file.filename : null;
+
+    console.log("Request Body:", req.body);
+    console.log("Uploaded File:", req.file);
 
     await connection.execute(
-      "UPDATE user_tbl SET username = ?, bio = ?, location = ? WHERE userID = ?",
-      [username, bio, location, userId]
+      "UPDATE user_tbl SET username = ?, bio = ?, location = ?, image = ? WHERE userID = ?",
+      [username, bio, location, image, userId]
     );
 
     res.status(200).send({ message: "Profile Updated Successfully" });
