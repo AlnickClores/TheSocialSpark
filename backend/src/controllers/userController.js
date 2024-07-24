@@ -100,6 +100,7 @@ exports.updateProfile = async (req, res) => {
     console.log("Request Body:", req.body);
     console.log("Uploaded File:", req.file);
 
+    // Fetch existing user data
     const [existingUserRows] = await connection.execute(
       "SELECT username, bio, location, image FROM user_tbl WHERE userID = ?",
       [userId]
@@ -111,23 +112,40 @@ exports.updateProfile = async (req, res) => {
 
     const existingUser = existingUserRows[0];
 
-    const updatedUser = {
-      username: username || existingUser.username,
-      bio: bio || existingUser.bio,
-      location: location || existingUser.location,
-      image: image || existingUser.image,
-    };
+    const updates = [];
+    const values = [];
 
-    await connection.execute(
-      "UPDATE user_tbl SET username = ?, bio = ?, location = ?, image = ? WHERE userID = ?",
-      [
-        updatedUser.username,
-        updatedUser.bio,
-        updatedUser.location,
-        updatedUser.image,
-        userId,
-      ]
-    );
+    if (username !== undefined) {
+      updates.push("username = ?");
+      values.push(username);
+    }
+    if (bio !== undefined) {
+      updates.push("bio = ?");
+      values.push(bio);
+    }
+    if (location !== undefined) {
+      updates.push("location = ?");
+      values.push(location);
+    }
+    if (image !== null) {
+      updates.push("image = ?");
+      values.push(image);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).send({ message: "No fields to update" });
+    }
+
+    values.push(userId);
+
+    const updateQuery = `UPDATE user_tbl SET ${updates.join(
+      ", "
+    )} WHERE userID = ?`;
+
+    console.log("Update Query:", updateQuery);
+    console.log("Values:", values);
+
+    await connection.execute(updateQuery, values);
 
     res.status(200).send({ message: "Profile Updated Successfully" });
   } catch (error) {
