@@ -12,7 +12,7 @@ app.use(cors());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 //routes
-const userRoute = require("./routes/users");
+const userRoute = require("./routes/userRoute");
 
 app.use("/users", userRoute);
 

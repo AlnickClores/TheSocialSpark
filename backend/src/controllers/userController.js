@@ -100,7 +100,6 @@ exports.updateProfile = async (req, res) => {
     console.log("Request Body:", req.body);
     console.log("Uploaded File:", req.file);
 
-    // Fetch the existing user data
     const [existingUserRows] = await connection.execute(
       "SELECT username, bio, location, image FROM user_tbl WHERE userID = ?",
       [userId]
@@ -112,7 +111,6 @@ exports.updateProfile = async (req, res) => {
 
     const existingUser = existingUserRows[0];
 
-    // Update only changed fields
     const updatedUser = {
       username: username || existingUser.username,
       bio: bio || existingUser.bio,
