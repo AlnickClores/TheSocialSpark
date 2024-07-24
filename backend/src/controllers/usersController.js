@@ -1,15 +1,24 @@
-const express = require("express");
 const jwt = require("jsonwebtoken");
 const connection = require("../database/connection");
 const multer = require("multer");
 const path = require("path");
-const upload = require("../middleware/upload");
+const register = require("../services/register");
 require("dotenv").config();
 
-const router = express.Router();
 const JWT_SECRET = process.env.JWT_KEY;
 
-router.post("/login", async (req, res) => {
+exports.registration = async (req, res) => {
+  try {
+    const { username, email, password, date_joined } = req.body;
+    await register(username, email, password, date_joined);
+    res.status(200).send({ message: "User created successfully." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error creating user." });
+  }
+};
+
+exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -39,9 +48,9 @@ router.post("/login", async (req, res) => {
     console.error(error);
     res.status(500).send({ message: "Internal server error." });
   }
-});
+};
 
-router.get("/user", async (req, res) => {
+exports.getUserData = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
@@ -73,9 +82,9 @@ router.get("/user", async (req, res) => {
     console.error("JWT verification error:", error);
     res.status(401).send({ message: "Invalid token" });
   }
-});
+};
 
-router.put("/updateProfile", upload.single("image"), async (req, res) => {
+exports.updateProfile = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
@@ -86,14 +95,40 @@ router.put("/updateProfile", upload.single("image"), async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
     const { username, bio, location } = req.body;
-    let image = req.file ? req.file.filename : null;
+    const image = req.file ? req.file.filename : null;
 
     console.log("Request Body:", req.body);
     console.log("Uploaded File:", req.file);
 
+    // Fetch the existing user data
+    const [existingUserRows] = await connection.execute(
+      "SELECT username, bio, location, image FROM user_tbl WHERE userID = ?",
+      [userId]
+    );
+
+    if (existingUserRows.length === 0) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const existingUser = existingUserRows[0];
+
+    // Update only changed fields
+    const updatedUser = {
+      username: username || existingUser.username,
+      bio: bio || existingUser.bio,
+      location: location || existingUser.location,
+      image: image || existingUser.image,
+    };
+
     await connection.execute(
       "UPDATE user_tbl SET username = ?, bio = ?, location = ?, image = ? WHERE userID = ?",
-      [username, bio, location, image, userId]
+      [
+        updatedUser.username,
+        updatedUser.bio,
+        updatedUser.location,
+        updatedUser.image,
+        userId,
+      ]
     );
 
     res.status(200).send({ message: "Profile Updated Successfully" });
@@ -101,6 +136,4 @@ router.put("/updateProfile", upload.single("image"), async (req, res) => {
     console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
-});
-
-module.exports = router;
+};

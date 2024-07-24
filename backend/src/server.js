@@ -13,10 +13,8 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 //routes
 const userRoute = require("./routes/users");
-const authRoute = require("./routes/auth");
 
 app.use("/users", userRoute);
-app.use("/auth", authRoute);
 
 const port = 3000;
 
