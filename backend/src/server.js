@@ -13,8 +13,10 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 //routes
 const userRoute = require("./routes/userRoute");
+const postRoute = require("./routes/postRoute");
 
 app.use("/users", userRoute);
+app.use("/post", postRoute);
 
 const port = 3000;
 

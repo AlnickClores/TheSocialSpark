@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const connection = require("../database/connection");
 const multer = require("multer");
 const path = require("path");
-const register = require("../services/register");
+const register = require("../services/userServices/register");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_KEY;
