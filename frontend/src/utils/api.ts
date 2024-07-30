@@ -19,3 +19,23 @@ export const fetchUserData = async () => {
     throw error;
   }
 };
+
+export const fetchUserPost = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  try {
+    const response = await axios.get("http://localhost:3000/post/fetch-post", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user posts.", error);
+    throw error;
+  }
+};
