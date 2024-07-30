@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import Post from "../components/Post";
+import Post from "../components/posts/Post";
 
 const Homepage = () => {
   return (

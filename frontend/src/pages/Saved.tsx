@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import SavedPost from "../components/SavedPost";
+import SavedPost from "../components/posts/SavedPost";
 
 const Saved = () => {
   return (
