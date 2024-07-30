@@ -153,3 +153,18 @@ exports.updateProfile = async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
+
+exports.searchUser = async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    const [results] = await connection.execute(
+      "SELECT userID, username, image FROM user_tbl WHERE username LIKE ?",
+      [`%${query}%`]
+    );
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error searching users:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};

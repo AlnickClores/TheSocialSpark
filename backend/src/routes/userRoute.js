@@ -24,4 +24,7 @@ router.put(
   usersController.updateProfile
 );
 
+// search other users
+router.get("/search", usersController.searchUser);
+
 module.exports = router;
