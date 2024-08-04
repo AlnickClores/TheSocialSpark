@@ -162,7 +162,14 @@ exports.searchUser = async (req, res) => {
       "SELECT userID, username, image FROM user_tbl WHERE username LIKE ?",
       [`%${query}%`]
     );
-    res.status(200).json(results);
+
+    const baseUrl = "http://localhost:3000/uploads/";
+    const resultsWithFullImageUrls = results.map((user) => ({
+      ...user,
+      image: user.image ? `${baseUrl}${user.image}` : null,
+    }));
+
+    res.status(200).json(resultsWithFullImageUrls);
   } catch (error) {
     console.error("Error searching users:", error);
     res.status(500).send({ message: "Internal server error" });
