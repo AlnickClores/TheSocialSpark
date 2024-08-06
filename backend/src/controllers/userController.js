@@ -36,6 +36,7 @@ exports.login = async (req, res) => {
     if (password !== user.password) {
       return res.status(400).send({ message: "Incorrect email or password" });
     }
+
     const token = jwt.sign({ id: user.userID, email: user.email }, JWT_SECRET, {
       expiresIn: "1h",
     });
@@ -173,5 +174,25 @@ exports.searchUser = async (req, res) => {
   } catch (error) {
     console.error("Error searching users:", error);
     res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+exports.getSearchedUserData = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const [user] = await connection.execute(
+      "SELECT userID, username, email, bio, date_joined, image, location FROM user_tbl WHERE username = ?",
+      [username]
+    );
+
+    if (user.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };

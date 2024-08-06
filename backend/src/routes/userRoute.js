@@ -27,4 +27,7 @@ router.put(
 // search other users
 router.get("/search", usersController.searchUser);
 
+// fetch user data by searched username
+router.get("/:username", usersController.getSearchedUserData);
+
 module.exports = router;
