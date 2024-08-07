@@ -54,8 +54,8 @@ const Search = () => {
     debouncedFetchSearchResults(query);
   }, [query]);
 
-  const handleUserClick = (userId: number) => {
-    navigate(`/profile/${userId}`);
+  const handleUserClick = (username: string) => {
+    navigate(`/profile/${username}`);
   };
 
   const handleCloseModal = () => {
@@ -83,7 +83,7 @@ const Search = () => {
               <div
                 key={user.userID}
                 className="flex items-center gap-3 p-2 border-b border-gray-600 cursor-pointer"
-                onClick={() => handleUserClick(user.userID)}
+                onClick={() => handleUserClick(user.username)}
               >
                 {user.image ? (
                   <img

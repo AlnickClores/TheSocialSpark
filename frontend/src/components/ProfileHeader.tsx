@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { ReactComponent as User } from "../assets/icons/user-solid.svg";
 import { ReactComponent as Location } from "../assets/icons/location-dot-solid.svg";
 import { ReactComponent as Calendar } from "../assets/icons/calendar-regular.svg";
-import { fetchUserData } from "../utils/api";
+import { fetchUserData, fetchSearchedUserData } from "../utils/api";
 import { formatDate } from "../utils/dateUtil";
 
 const ProfileHeader = () => {
+  const location = useLocation();
+  const isLoggedInProfilePage = location.pathname.endsWith("/profile");
+  const { username } = useParams();
   const [userData, setUserData] = useState({
     username: "",
     bio: "",
@@ -18,15 +21,18 @@ const ProfileHeader = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const data = await fetchUserData();
+        const data = username
+          ? await fetchSearchedUserData(username)
+          : await fetchUserData();
         setUserData(data);
       } catch (error) {
         console.log(error);
       }
     };
     getUserData();
-  }, []);
+  }, [username]);
 
+  console.log(userData);
   return (
     <div>
       <div className="flex items-center justify-between mt-5">
@@ -40,11 +46,17 @@ const ProfileHeader = () => {
           <User className="text-white fill-current w-16 h-16 border border-gray-600 rounded-full p-1" />
         )}
 
-        <Link to="/editprofile">
+        {isLoggedInProfilePage ? (
+          <Link to="/editprofile">
+            <button className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm">
+              Edit Profile
+            </button>
+          </Link>
+        ) : (
           <button className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm">
-            Edit Profile
+            Follow
           </button>
-        </Link>
+        )}
       </div>
       <h1 className="text-xl font-semibold pb-3 mt-2 border-b border-gray-600">
         {userData.username}
