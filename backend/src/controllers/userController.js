@@ -181,16 +181,22 @@ exports.getSearchedUserData = async (req, res) => {
   const { username } = req.params;
 
   try {
-    const [user] = await connection.execute(
+    const [rows] = await connection.execute(
       "SELECT userID, username, email, bio, date_joined, image, location FROM user_tbl WHERE username = ?",
       [username]
     );
 
-    if (user.length === 0) {
+    if (rows.length === 0) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(user[0]);
+    const user = rows[0];
+
+    if (user.image) {
+      user.image = `http://localhost:3000/uploads/${user.image}`;
+    }
+
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
