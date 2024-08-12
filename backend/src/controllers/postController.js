@@ -16,8 +16,11 @@ exports.createPost = async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
     const { content, location } = req.body;
+    const image = req.file;
 
-    await createPost(userId, content, location);
+    const imageData = image ? image.buffer : null;
+
+    await createPost(userId, content, imageData, location);
 
     res.status(200).send({ message: "Post created successfully." });
   } catch (error) {
@@ -39,7 +42,15 @@ exports.fetchPost = async (req, res) => {
 
     const posts = await fetchPost(userId);
 
-    res.status(200).send(posts);
+    const formattedPosts = posts.map((post) => ({
+      content: post.content,
+      image: post.image ? post.image.toString("base64") : null,
+      location: post.location,
+      stars: post.stars,
+      date_created: post.date_created,
+    }));
+
+    res.status(200).send(formattedPosts);
   } catch (error) {
     console.error("Error fetching posts:", error);
     res.status(500).send({ message: "Internal server error" });
