@@ -4,26 +4,28 @@ import Navbar from "../components/Navbar";
 import { ReactComponent as PhotoFilm } from "../assets/icons/photo-film-solid.svg";
 import axios from "axios";
 
+type PostState = {
+  content: string;
+  image: File | null;
+  location: string;
+};
+
 const Create = () => {
-  const [post, setPost] = useState({
-    caption: "",
-    image: "",
+  const [post, setPost] = useState<PostState>({
+    content: "",
+    image: null,
     location: "",
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = (event: any) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPost((prevData) => ({
-          ...prevData,
-          image: reader.result as string,
-        }));
-      };
-      reader.readAsDataURL(file);
+      setPost((prevData) => ({
+        ...prevData,
+        image: file,
+      }));
     }
   };
 
@@ -37,7 +39,7 @@ const Create = () => {
     }));
   };
 
-  const submitPost = async (e: any) => {
+  const submitPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -47,26 +49,28 @@ const Create = () => {
         throw new Error("No token found.");
       }
 
-      const postData = {
-        content: post.caption,
-        location: post.location,
-      };
+      const formData = new FormData();
+      formData.append("content", post.content);
+      formData.append("location", post.location);
+      if (post.image) {
+        formData.append("image", post.image);
+      }
 
       const response = await axios.post(
         "http://localhost:3000/post/create-post",
-        postData,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       console.log(response.data);
       setPost({
-        caption: "",
-        image: "",
+        content: "",
+        image: null,
         location: "",
       });
     } catch (error) {
@@ -83,11 +87,12 @@ const Create = () => {
           <div>
             <h1 className="font-semibold mb-2">Caption</h1>
             <textarea
-              name="caption"
+              name="content"
               className="bg-[#121212] p-2 w-full h-32 text-sm rounded-lg border border-gray-600 focus:ring-[#bb86fc] focus:border-[#bb86fc]"
               placeholder="Write your caption here..."
-              value={post.caption}
+              value={post.content}
               onChange={handleChange}
+              required
             ></textarea>
           </div>
           <div>
@@ -103,16 +108,23 @@ const Create = () => {
                 </p>
               </div>
               <div>
-                <button
-                  className="bg-[#3a3a3a] px-4 py-2 rounded-md text-sm font-semibold"
-                  onClick={() => {
-                    if (fileInputRef.current) {
-                      fileInputRef.current.click();
-                    }
-                  }}
-                >
-                  Select From Device
-                </button>
+                {post.image ? (
+                  <button className="bg-[#3a3a3a] px-4 py-2 rounded-md text-sm font-semibold cursor-not-allowed">
+                    Image Added
+                  </button>
+                ) : (
+                  <button
+                    className="bg-[#3a3a3a] px-4 py-2 rounded-md text-sm font-semibold"
+                    type="button"
+                    onClick={() => {
+                      if (fileInputRef.current) {
+                        fileInputRef.current.click();
+                      }
+                    }}
+                  >
+                    Select From Device
+                  </button>
+                )}
                 <input
                   type="file"
                   name="image"
