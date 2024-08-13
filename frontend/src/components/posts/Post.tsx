@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { users } from "../../data/users";
+import SampleImage from "../../assets/images/sample-image.jpg";
+import SampleImage1 from "../../assets/images/sample-image1.jpg";
+import SampleImage2 from "../../assets/images/sample-image2.jpg";
+import SampleImage3 from "../../assets/images/sample-image3.jpg";
 import starFilled from "../../assets/icons/star-solid.svg";
 import starRegular from "../../assets/icons/star-regular.svg";
 import bookmarkRegular from "../../assets/icons/bookmark-regular.svg";
@@ -11,6 +14,7 @@ import { formatDatePost } from "../../utils/dateUtil";
 interface Post {
   postId: number;
   date_created: string;
+  image: string;
   content: string;
   location: string;
   stars: number;
@@ -72,6 +76,7 @@ const Post = () => {
                 <img
                   src={userData.image}
                   className="h-8 w-10 text-[#bb86fc] fill-current rounded-full"
+                  alt="profile image"
                 />
               ) : (
                 <User className="h-8 w-10 text-[#bb86fc] fill-current" />
@@ -83,7 +88,26 @@ const Post = () => {
                 </p>
               </div>
             </div>
+            <p className="my-2 mx-1 text-slate-300 text-sm">{post.location}</p>
             <div className="p-1">
+              {post.image ? (
+                <div className="py-1">
+                  <img
+                    className="rounded-lg"
+                    src={`data:image/jpeg;base64,${post.image}`}
+                    alt="post image"
+                  />
+                </div>
+              ) : (
+                <div className="py-1">
+                  <img
+                    className="rounded-lg"
+                    src={SampleImage}
+                    alt="post image"
+                  />
+                </div>
+              )}
+
               <span className="font-center text-sm">{post.content}</span>
             </div>
             <div className="flex justify-between mt-3 px-2">
