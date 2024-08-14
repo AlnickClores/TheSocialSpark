@@ -62,3 +62,26 @@ export const fetchSearchedUserData = async (username: string) => {
     throw error;
   }
 };
+
+export const fetchSearchedUserPost = async (username: string) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No token found.");
+  }
+
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/users/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch search user posts", error);
+    throw error;
+  }
+};
