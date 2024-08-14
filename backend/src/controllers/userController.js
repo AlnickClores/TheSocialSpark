@@ -196,6 +196,16 @@ exports.getSearchedUserData = async (req, res) => {
       user.image = `http://localhost:3000/uploads/${user.image}`;
     }
 
+    const [postRows] = await connection.execute(
+      "SELECT postId, content, date_created, stars, location, image FROM post_tbl where userId = ? ORDER BY date_created DESC",
+      [user.userID]
+    );
+
+    user.posts = postRows.map((post) => ({
+      ...post,
+      image: post.image ? Buffer.from(post.image).toString("base64") : null,
+    }));
+
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
