@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import Post from "../components/posts/Post";
+import WelcomePost from "../components/posts/WelcomePost";
 
 const Homepage = () => {
   return (
@@ -8,11 +8,7 @@ const Homepage = () => {
       <Navbar />
       <div className="p-3">
         <h1 className="text-xl font-bold mt-5 mb-10">Home Feed</h1>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        <WelcomePost />
       </div>
     </div>
   );
