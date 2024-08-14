@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import SampleImage from "../../assets/images/sample-image.jpg";
 import SampleImage1 from "../../assets/images/sample-image1.jpg";
 import SampleImage2 from "../../assets/images/sample-image2.jpg";
@@ -8,7 +9,12 @@ import starRegular from "../../assets/icons/star-regular.svg";
 import bookmarkRegular from "../../assets/icons/bookmark-regular.svg";
 import bookmarkFilled from "../../assets/icons/bookmark-solid.svg";
 import { ReactComponent as User } from "../../assets/icons/user-solid.svg";
-import { fetchUserPost, fetchUserData } from "../../utils/api";
+import {
+  fetchUserPost,
+  fetchUserData,
+  fetchSearchedUserData,
+  fetchSearchedUserPost,
+} from "../../utils/api";
 import { formatDatePost } from "../../utils/dateUtil";
 
 interface Post {
@@ -21,6 +27,10 @@ interface Post {
 }
 
 const Post = () => {
+  const location = useLocation();
+  const { username } = useParams();
+  const isLoggedInProfilePage = location.pathname.endsWith("/profile");
+
   const [starred, setStarred] = useState(false);
   const [saved, setSaved] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -41,28 +51,38 @@ const Post = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const data = await fetchUserData();
+        const data = username
+          ? await fetchSearchedUserData(username)
+          : await fetchUserData();
         setUserData(data);
       } catch (error) {
         console.log(error);
       }
     };
     getUserData();
-  }, []);
+  }, [username]);
 
   useEffect(() => {
     const getUserPost = async () => {
       try {
-        const data = await fetchUserPost();
-        setPosts(data);
+        const data = username
+          ? await fetchSearchedUserPost(username)
+          : await fetchUserPost();
+
+        if (data && isLoggedInProfilePage) {
+          setPosts(data);
+          console.log(data);
+        } else {
+          setPosts(data.posts);
+          console.log(data.posts);
+        }
       } catch (error) {
         console.log(error);
       }
     };
     getUserPost();
-  }, []);
+  }, [username]);
 
-  console.log(posts);
   return (
     <div>
       {posts.length > 0 ? (
@@ -149,7 +169,11 @@ const Post = () => {
         ))
       ) : (
         <div className="flex justify-center">
-          <h1>You have no posts.</h1>
+          {isLoggedInProfilePage ? (
+            <h1>You have no posts.</h1>
+          ) : (
+            <h1>This user has no posts.</h1>
+          )}
         </div>
       )}
     </div>
