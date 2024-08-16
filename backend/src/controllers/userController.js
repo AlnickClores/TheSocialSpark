@@ -3,6 +3,7 @@ const connection = require("../database/connection");
 const multer = require("multer");
 const path = require("path");
 const register = require("../services/userServices/register");
+const follow = require("../services/userServices/follow");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_KEY;
@@ -210,5 +211,32 @@ exports.getSearchedUserData = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+exports.followUser = async (req, res) => {
+  const { userId, followingId } = req.body;
+
+  console.log("Req Body:", req.body);
+
+  if (!userId || !followingId) {
+    return res
+      .status(400)
+      .json({ message: "User ID and Following ID are required." });
+  }
+
+  try {
+    const result = await follow({ userId, followingId });
+
+    if (result.alreadyFollowing) {
+      return res.status(400).json({ message: "Already following this user." });
+    }
+
+    if (result.success) {
+      return res.status(200).json({ message: "User followed successfully" });
+    }
+  } catch (error) {
+    console.error("Error: ", error);
+    return res.status(500).json({ message: "Internal Server Error." });
   }
 };

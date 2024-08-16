@@ -30,4 +30,7 @@ router.get("/search", usersController.searchUser);
 // fetch user data by searched username
 router.get("/:username", usersController.getSearchedUserData);
 
+// follow user
+router.post("/follow", usersController.followUser);
+
 module.exports = router;
