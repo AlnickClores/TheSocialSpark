@@ -257,3 +257,33 @@ exports.getFollowersAndFollowing = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+exports.checkFollowStatus = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Token is missing" });
+  }
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.id;
+    const { username } = req.params;
+
+    const [profileUser] = await connection.execute(
+      "SELECT userID from user_tbl WHERE username = ?",
+      [username]
+    );
+
+    const profileUserId = profileUser[0].userID;
+
+    const [followStatus] = await connection.execute(
+      "SELECT * FROM followers_tbl WHERE follower_id = ? AND following_id = ?",
+      [userId, profileUserId]
+    );
+
+    const isFollowing = followStatus.length > 0;
+    res.status(200).json({ isFollowing });
+  } catch (error) {
+    console.error(error);
+  }
+};

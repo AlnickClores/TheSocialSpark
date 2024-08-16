@@ -39,4 +39,8 @@ router.get(
   usersController.getFollowersAndFollowing
 );
 
+// check if the logged in user already followed the visited profile of other user
+
+router.get("/check-follow-status/:username", usersController.checkFollowStatus);
+
 module.exports = router;
