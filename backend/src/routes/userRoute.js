@@ -33,4 +33,10 @@ router.get("/:username", usersController.getSearchedUserData);
 // follow user
 router.post("/follow", usersController.followUser);
 
+// fetch the number of followers and following
+router.get(
+  "/:userId/followers-following",
+  usersController.getFollowersAndFollowing
+);
+
 module.exports = router;
