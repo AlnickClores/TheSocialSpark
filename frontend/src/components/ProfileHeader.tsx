@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as User } from "../assets/icons/user-solid.svg";
 import { ReactComponent as Location } from "../assets/icons/location-dot-solid.svg";
 import { ReactComponent as Calendar } from "../assets/icons/calendar-regular.svg";
 import { fetchUserData, fetchSearchedUserData } from "../utils/api";
 import { formatDate } from "../utils/dateUtil";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const ProfileHeader = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isLoggedInProfilePage = location.pathname.endsWith("/profile");
+  const [isFollowing, setIsFollowing] = useState(false);
   const { username } = useParams();
+  const [followerCount, setFollowerCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
   const [userData, setUserData] = useState({
+    userID: "",
     username: "",
     bio: "",
     location: "",
@@ -25,6 +32,24 @@ const ProfileHeader = () => {
           ? await fetchSearchedUserData(username)
           : await fetchUserData();
         setUserData(data);
+
+        const response = await axios.get(
+          `http://localhost:3000/users/${data.userID}/followers-following`
+        );
+
+        setFollowerCount(response.data.followerCount);
+        setFollowingCount(response.data.followingCount);
+
+        if (username) {
+          const token = localStorage.getItem("token");
+          const res = await axios.get(
+            `http://localhost:3000/users/check-follow-status/${username}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          setIsFollowing(res.data.isFollowing);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -32,7 +57,38 @@ const ProfileHeader = () => {
     getUserData();
   }, [username]);
 
-  console.log(userData);
+  const handleFollowUser = async () => {
+    const confirmFollow = window.confirm(`Follow ${username}?`);
+    if (!confirmFollow) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const decodedToken = jwtDecode(token) as { id: string };
+    const userId = decodedToken.id;
+    const followingId = userData.userID;
+
+    try {
+      const response = await axios.post("http://localhost:3000/users/follow", {
+        userId,
+        followingId,
+      });
+
+      if (response.status === 200) {
+        setIsFollowing(!isFollowing);
+        alert("User followed successfully");
+        navigate(0);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUnfollowUser = () => {};
   return (
     <div>
       <div className="flex items-center justify-between mt-5">
@@ -52,8 +108,18 @@ const ProfileHeader = () => {
               Edit Profile
             </button>
           </Link>
+        ) : isFollowing ? (
+          <button
+            className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm"
+            onClick={handleUnfollowUser}
+          >
+            Unfollow
+          </button>
         ) : (
-          <button className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm">
+          <button
+            className="py-1 px-4 border border-gray-600 rounded-2xl font-semibold text-sm"
+            onClick={handleFollowUser}
+          >
             Follow
           </button>
         )}
@@ -80,11 +146,11 @@ const ProfileHeader = () => {
       </div>
       <div className="flex gap-3 my-3 pl-0.5">
         <div className="flex gap-1 text-sm">
-          <h1 className="font-semibold">0</h1>
+          <h1 className="font-semibold">{followingCount}</h1>
           <h1 className="text-gray-400">Following</h1>
         </div>
         <div className="flex gap-1 text-sm">
-          <h1 className="font-semibold">0</h1>
+          <h1 className="font-semibold">{followerCount}</h1>
           <h1 className="text-gray-400">Followers</h1>
         </div>
       </div>
