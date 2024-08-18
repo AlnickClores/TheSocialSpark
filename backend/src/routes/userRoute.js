@@ -33,6 +33,9 @@ router.get("/:username", usersController.getSearchedUserData);
 // follow user
 router.post("/follow", usersController.followUser);
 
+// unfollow user
+router.post("/unfollow", usersController.unfollowUser);
+
 // fetch the number of followers and following
 router.get(
   "/:userId/followers-following",
@@ -40,7 +43,6 @@ router.get(
 );
 
 // check if the logged in user already followed the visited profile of other user
-
 router.get("/check-follow-status/:username", usersController.checkFollowStatus);
 
 module.exports = router;

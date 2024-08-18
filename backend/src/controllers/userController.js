@@ -4,6 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const register = require("../services/userServices/register");
 const follow = require("../services/userServices/follow");
+const unfollow = require("../services/userServices/unfollow");
 const fCounts = require("../services/userServices/follower-followingCount");
 require("dotenv").config();
 
@@ -218,8 +219,6 @@ exports.getSearchedUserData = async (req, res) => {
 exports.followUser = async (req, res) => {
   const { userId, followingId } = req.body;
 
-  console.log("Req Body:", req.body);
-
   if (!userId || !followingId) {
     return res
       .status(400)
@@ -239,6 +238,32 @@ exports.followUser = async (req, res) => {
   } catch (error) {
     console.error("Error: ", error);
     return res.status(500).json({ message: "Internal Server Error." });
+  }
+};
+
+exports.unfollowUser = async (req, res) => {
+  const { userId, followingId } = req.body;
+
+  if (!userId || !followingId) {
+    return res
+      .status(400)
+      .json({ message: "User ID and Following ID are required." });
+  }
+
+  try {
+    const result = await unfollow({ userId, followingId });
+
+    console.log(req.body);
+    console.log(result);
+
+    if (result.alreadyFollowing && result.unfollowed) {
+      return res.status(200).json({ message: "User Unfollowed Successfully" });
+    } else {
+      return res.status(400).json({ message: "User is not following" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
