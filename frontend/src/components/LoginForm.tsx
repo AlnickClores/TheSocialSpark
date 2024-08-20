@@ -10,10 +10,12 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState<String | null>(null);
 
   const handleChange = (e: any) => {
     setUserCredential((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
   const handleLogin = async (e: any) => {
     e.preventDefault();
 
@@ -26,8 +28,10 @@ const LoginForm = () => {
       const { token } = response.data;
       localStorage.setItem("token", token);
 
+      setError(null);
       navigate("/homepage");
     } catch (error) {
+      setError("Invalid username or password.");
       console.log(error);
     }
   };
@@ -42,6 +46,7 @@ const LoginForm = () => {
           onChange={handleChange}
           className="px-3 py-2 bg-[#121212] text-sm border border-gray-400"
           placeholder="Enter your email here..."
+          required
         />
       </div>
       <div className="flex flex-col">
@@ -52,8 +57,14 @@ const LoginForm = () => {
           onChange={handleChange}
           className="px-3 py-2 bg-[#121212] text-sm border border-gray-400"
           placeholder="Enter your password here..."
+          required
         />
       </div>
+      {error && (
+        <p className="text-sm text-center text-red-500 font-semibold animate-shake">
+          {error}
+        </p>
+      )}
       <button
         type="submit"
         className="py-1 mt-2 bg-[#bb86fc] rounded-lg font-semibold"
