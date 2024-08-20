@@ -80,7 +80,7 @@ const ProfileHeader = () => {
 
       if (response.status === 200) {
         setIsFollowing(!isFollowing);
-        alert("User followed successfully");
+        alert("User followed successfully.");
         navigate(0);
       }
     } catch (error) {
@@ -88,7 +88,43 @@ const ProfileHeader = () => {
     }
   };
 
-  const handleUnfollowUser = () => {};
+  const handleUnfollowUser = async () => {
+    const confirmUnfollow = window.confirm(
+      `Are you sure you want to unfollow ${username}?`
+    );
+
+    if (!confirmUnfollow) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const decodedToken = jwtDecode(token) as { id: string };
+    const userId = decodedToken.id;
+    const followingId = userData.userID;
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/users/unfollow",
+        {
+          userId,
+          followingId,
+        }
+      );
+
+      if (response.status === 200) {
+        setIsFollowing(!isFollowing);
+        alert("User unfollowed successfully.");
+        navigate(0);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
       <div className="flex items-center justify-between mt-5">
