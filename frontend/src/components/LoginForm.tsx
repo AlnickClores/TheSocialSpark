@@ -31,7 +31,10 @@ const LoginForm = () => {
       setError(null);
       navigate("/homepage");
     } catch (error) {
-      setError("Invalid username or password.");
+      setError(null);
+      setTimeout(() => {
+        setError("Invalid username or password.");
+      }, 0);
       console.log(error);
     }
   };
