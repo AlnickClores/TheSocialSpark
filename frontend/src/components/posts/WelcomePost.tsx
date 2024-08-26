@@ -1,8 +1,7 @@
 import React from "react";
 import SocialSparkLogo from "../../assets/images/social-spark.png";
 import SampleImage from "../../assets/images/sample-image.jpg";
-import starRegular from "../../assets/icons/star-regular.svg";
-import bookmarkRegular from "../../assets/icons/bookmark-regular.svg";
+import { icons } from "../../assets/icons/icons";
 
 const WelcomePost = () => {
   return (
@@ -33,12 +32,10 @@ const WelcomePost = () => {
       </span>
       <div className="flex justify-between mt-3 px-2">
         <div className="flex items-center justify-center gap-1">
-          <img className="h-5 w-5" src={starRegular} alt="star" />
-
+          {icons.star}
           <p className="text-sm">0</p>
         </div>
-
-        <img className="h-5 w-5" src={bookmarkRegular} alt="bookmark" />
+        {icons.save}
       </div>
     </div>
   );

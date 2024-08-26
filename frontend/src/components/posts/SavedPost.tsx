@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as User } from "../../assets/icons/user-solid.svg";
+import { icons } from "../../assets/icons/icons";
 
 const SavedPost = () => {
   return (
@@ -11,8 +11,7 @@ const SavedPost = () => {
         rem aliquid, mollitia exercitationem?
       </p>
       <div className="flex relative gap-2 mt-5 items-center border-t border-gray-600 py-2">
-        <User className="h-4 w-4 text-[#bb86fc] fill-current" />
-        <p className="font-semibold text-sm">Knotz</p>
+        {icons.userCircle} <p className="font-bold text-sm">Knotz</p>
       </div>
     </div>
   );

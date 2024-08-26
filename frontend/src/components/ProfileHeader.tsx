@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as User } from "../assets/icons/user-solid.svg";
-import { ReactComponent as Location } from "../assets/icons/location-dot-solid.svg";
-import { ReactComponent as Calendar } from "../assets/icons/calendar-regular.svg";
 import { fetchUserData, fetchSearchedUserData } from "../utils/api";
 import { formatDate } from "../utils/dateUtil";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { icons } from "../assets/icons/icons";
 
 const ProfileHeader = () => {
   const location = useLocation();
@@ -135,7 +134,9 @@ const ProfileHeader = () => {
             className="w-16 h-16 rounded-full"
           />
         ) : (
-          <User className="text-white fill-current w-16 h-16 border border-gray-600 rounded-full p-1" />
+          <div className="h-16 w-16 rounded-full bg-gray-500 flex items-center justify-center">
+            <User className="h-11 w-11 text-white" />
+          </div>
         )}
 
         {isLoggedInProfilePage ? (
@@ -168,13 +169,13 @@ const ProfileHeader = () => {
       </div>
       <div className="flex gap-5">
         <div className="flex gap-1 justify-center items-center">
-          <Location className="text-gray-400 fill-current w-3 h-4" />
+          {icons.location}
           <p className="text-sm text-gray-400">
             {userData.location ? userData.location : "Unknown"}
           </p>
         </div>
         <div className="flex gap-1 justify-center items-center">
-          <Calendar className="text-gray-400 fill-current w-3 h-4" />
+          {icons.calendar}
           <p className="text-sm text-gray-400">
             Joined {formatDate(userData.date_joined)}
           </p>

@@ -4,11 +4,6 @@ import SampleImage from "../../assets/images/sample-image.jpg";
 import SampleImage1 from "../../assets/images/sample-image1.jpg";
 import SampleImage2 from "../../assets/images/sample-image2.jpg";
 import SampleImage3 from "../../assets/images/sample-image3.jpg";
-import starFilled from "../../assets/icons/star-solid.svg";
-import starRegular from "../../assets/icons/star-regular.svg";
-import bookmarkRegular from "../../assets/icons/bookmark-regular.svg";
-import bookmarkFilled from "../../assets/icons/bookmark-solid.svg";
-import { ReactComponent as User } from "../../assets/icons/user-solid.svg";
 import {
   fetchUserPost,
   fetchUserData,
@@ -16,6 +11,7 @@ import {
   fetchSearchedUserPost,
 } from "../../utils/api";
 import { formatDatePost } from "../../utils/dateUtil";
+import { icons } from "../../assets/icons/icons";
 
 interface Post {
   postId: number;
@@ -99,7 +95,7 @@ const Post = () => {
                   alt="profile image"
                 />
               ) : (
-                <User className="h-8 w-10 text-[#bb86fc] fill-current" />
+                <>{icons.userCircle}</>
               )}
               <div className="flex items-center gap-3 ml-2">
                 <h1 className="font-bold text-md">{userData.username}</h1>
@@ -132,38 +128,10 @@ const Post = () => {
             </div>
             <div className="flex justify-between mt-3 px-2">
               <div className="flex items-center justify-center gap-1">
-                {!starred ? (
-                  <img
-                    className="h-5 w-5"
-                    src={starRegular}
-                    alt="star"
-                    onClick={handleStar}
-                  />
-                ) : (
-                  <img
-                    className="h-5 w-5"
-                    src={starFilled}
-                    alt="star"
-                    onClick={handleStar}
-                  />
-                )}
+                {!starred ? <>{icons.star}</> : <>{icons.starFilled}</>}
                 <p className="text-sm">{post.stars}</p>
               </div>
-              {!saved ? (
-                <img
-                  className="h-5 w-5"
-                  src={bookmarkRegular}
-                  alt="bookmark"
-                  onClick={handleSave}
-                />
-              ) : (
-                <img
-                  className="h-5 w-5"
-                  src={bookmarkFilled}
-                  alt="bookmark"
-                  onClick={handleSave}
-                />
-              )}
+              {!saved ? <>{icons.save}</> : <>{icons.saveFilled}</>}
             </div>
           </div>
         ))

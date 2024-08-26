@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ReactComponent as Spark } from "../assets/icons/sparkles-outline-svgrepo-com.svg";
 import RegistrationForm from "../components/RegistrationForm";
+import { icons } from "../assets/icons/icons";
 
 const Register = () => {
   return (
     <div className="h-screen flex items-center justify-center">
       <div className="flex flex-col">
         <div className="flex items-center gap-2">
-          <Spark className="text-[#bb86fc] fill-current w-9 h-9" />
+          {icons.spark}
           <h1 className="text-[#bb86fc] text-3xl text-center font-bold">
             The SocialSpark
           </h1>

@@ -49,7 +49,6 @@ const Profile = () => {
               <div>
                 <h1 className="text-lg font-semibold">Starred</h1>
                 <Post />
-                <Post />
               </div>
             )}
           </div>

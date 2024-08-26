@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { ReactComponent as User } from "../assets/icons/user-solid.svg";
-import { ReactComponent as Ellipsis } from "../assets/icons/ellipsis-solid.svg";
+import { icons } from "../assets/icons/icons";
 
 interface RecentSearchProps {
   openModal: boolean;
@@ -17,12 +17,11 @@ const RecentSearch: React.FC<RecentSearchProps> = ({
   };
   return (
     <div className="flex items-center justify-between my-4">
-      <User className="w-7 h-7 text-[#bb86fc] fill-current" />
+      <div className="h-8 w-8 rounded-full bg-gray-500 flex items-center justify-center">
+        <User className="h-6 w-6 text-white" />
+      </div>
       <p className="mr-auto ml-4 font-semibold">Knotz</p>
-      <Ellipsis
-        className="w-5 h-5 text-white fill-current"
-        onClick={toggleModal}
-      />
+      {icons.ellipsis(toggleModal)}
     </div>
   );
 };

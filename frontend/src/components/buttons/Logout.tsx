@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as LogoutBtn } from "../../assets/icons/right-from-bracket-solid.svg";
+import { icons } from "../../assets/icons/icons";
 
 const LogoutButton = () => {
   const navigate = useNavigate();
@@ -10,12 +10,7 @@ const LogoutButton = () => {
     navigate("/");
   };
 
-  return (
-    <LogoutBtn
-      onClick={handleLogout}
-      className="w-5 h-5 text-[#bb86fc] fill-current"
-    />
-  );
+  return <>{icons.logout(handleLogout)}</>;
 };
 
 export default LogoutButton;
