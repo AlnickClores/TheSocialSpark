@@ -1,29 +1,36 @@
 import React from "react";
 import { menu } from "../data/menuData";
+import { icons } from "../assets/icons/icons";
 
 const FoodCard = () => {
   return (
-    <div>
+    <div className="px-2">
       {menu["main-course"].map((item, index) => (
-        <div className="border border-blue-500" key={index}>
-          <img src={item.image} alt="image" />
-          <h3>{item.name}</h3>
-          <p>{item.description}</p>
-          <p>Price: {item.price}</p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M7.5 3.75H6A2.25 2.25 0 0 0 3.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0 1 20.25 6v1.5m0 9V18A2.25 2.25 0 0 1 18 20.25h-1.5m-9 0H6A2.25 2.25 0 0 1 3.75 18v-1.5M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-            />
-          </svg>
+        <div className="rounded-xl shadow-lg shadow-black/30 mb-6" key={index}>
+          <div className="relative">
+            <img className="w-full" src={item.image} alt="menu-image" />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70"></div>
+
+            <h3 className="absolute bottom-0 left-0 p-2">
+              <span className="text-[#ff8418] font-bold text-xl mr-2.5">
+                &#8369;{item.price}
+              </span>
+              <span className="text-xl font-bold font-header text-white">
+                {item.name}
+              </span>
+            </h3>
+          </div>
+
+          <div className="px-2 py-3">
+            <p className="text-sm text-pretty">{item.description}</p>
+            <div className="flex justify-between mt-3">
+              {icons.ar}
+              <button className="bg-[#ff8418] font-bold text-xl rounded-full px-1.5">
+                {icons.plus}
+              </button>
+            </div>
+          </div>
         </div>
       ))}
     </div>
