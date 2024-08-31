@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
-import Basket from "../../components/Basket";
+import BasketButton from "../../components/BasketButton";
 import FoodCard from "../../components/FoodCard";
 
 const MainCourse = () => {
@@ -12,7 +12,7 @@ const MainCourse = () => {
         Main Course
       </h1>
       <FoodCard category={category} />
-      <Basket />
+      <BasketButton />
     </div>
   );
 };

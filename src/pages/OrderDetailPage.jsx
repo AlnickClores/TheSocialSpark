@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { icons } from "../assets/icons/icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import AddToBasketButton from "../components/AddToBasketButton";
 
 const OrderDetailPage = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [quantity, setQuantity] = useState(1);
 
-  const { image, price, name, description } = location.state || {};
+  const { image, price, name } = location.state || {};
 
   const handleGoBack = () => {
     navigate(-1);
@@ -63,14 +63,7 @@ const OrderDetailPage = (props) => {
           {icons.plusButton}
         </button>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 flex justify-center items-center py-3 px-5">
-        <button
-          className="bg-[#ff8428] w-full text-lg font-bold text-white px-6 py-2 rounded-xl"
-          onClick={() => alert("Wala pa e. - Alnick")}
-        >
-          Add to Basket
-        </button>
-      </div>
+      <AddToBasketButton />
     </div>
   );
 };

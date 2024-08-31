@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
 import FoodCard from "../../components/FoodCard";
-import Basket from "../../components/Basket";
+import Basket from "../../components/BasketButton";
 
 const Coffee = () => {
   const category = "coffee";

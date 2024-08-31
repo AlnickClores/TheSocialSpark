@@ -40,7 +40,6 @@ const FoodCard = (props) => {
                     image: item.image,
                     price: item.price,
                     name: item.name,
-                    description: item.description,
                   }}
                 >
                   {icons.plus}
