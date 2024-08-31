@@ -1,12 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { menu } from "../data/menuData";
 import { icons } from "../assets/icons/icons";
 
-const FoodCard = () => {
+const FoodCard = (props) => {
   return (
     <div className="px-2">
-      {menu["main-course"].map((item, index) => (
-        <div className="rounded-xl shadow-lg shadow-black/30 mb-6" key={index}>
+      {menu[props.category].map((item, index) => (
+        <div
+          className="bg-white rounded-xl shadow-lg shadow-black/30 mb-6"
+          key={index}
+        >
           <div className="relative">
             <img className="w-full" src={item.image} alt="menu-image" />
 
@@ -26,8 +30,21 @@ const FoodCard = () => {
             <p className="text-sm text-pretty">{item.description}</p>
             <div className="flex justify-between mt-3">
               {icons.ar}
+
               <button className="bg-[#ff8418] font-bold text-xl rounded-full px-1.5">
-                {icons.plus}
+                <Link
+                  to={{
+                    pathname: "/order-detail",
+                  }}
+                  state={{
+                    image: item.image,
+                    price: item.price,
+                    name: item.name,
+                    description: item.description,
+                  }}
+                >
+                  {icons.plus}
+                </Link>
               </button>
             </div>
           </div>

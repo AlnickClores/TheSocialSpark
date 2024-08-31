@@ -5,7 +5,9 @@ import MainCourse from "./pages/menu/MainCourse";
 import Drinks from "./pages/menu/Drinks";
 import Desserts from "./pages/menu/Desserts";
 import Burgers from "./pages/menu/Burgers";
+import Coffee from "./pages/menu/Coffee";
 import BasketPage from "./pages/BasketPage";
+import OrderDetailPage from "./pages/OrderDetailPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Homepage /> },
@@ -15,4 +17,6 @@ export const router = createBrowserRouter([
   { path: "/cakes", element: <Desserts /> },
   { path: "/burgers", element: <Burgers /> },
   { path: "/basket", element: <BasketPage /> },
+  { path: "/coffee", element: <Coffee /> },
+  { path: "/order-detail", element: <OrderDetailPage /> },
 ]);
