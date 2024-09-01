@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../components/Navbar";
 import HeaderImage from "../assets/images/bg-image.jpg";
 

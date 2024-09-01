@@ -69,35 +69,35 @@ export const menu = {
   cakes: [
     {
       name: "Mango Cake",
-      sizes: ["slice", "whole"],
+      sizes: ["Slice", "Whole"],
       price: { slice: "135.00", whole: "1020.00" },
       description:
         "Delicious mango-flavored cake topped with fresh mango slices.",
-      image: null,
+      image: dessert,
     },
     {
       name: "Blueberry",
-      sizes: ["slice", "whole"],
+      sizes: ["Slice", "Whole"],
       price: { slice: "135.00", whole: "1020.00" },
       description:
         "Rich and moist chocolate cake with a creamy chocolate frosting.",
-      image: null,
+      image: dessert,
     },
     {
       name: "Strawberry",
-      sizes: ["slice", "whole"],
+      sizes: ["Slice", "Whole"],
       price: { slice: "135.00", whole: "1020.00" },
       description:
         "Rich and moist chocolate cake with a creamy chocolate frosting.",
-      image: null,
+      image: dessert,
     },
     {
       name: "Ube",
-      sizes: ["slice", "whole"],
+      sizes: ["Slice", "Whole"],
       price: { slice: "135.00", whole: "1020.00" },
       description:
         "Rich and moist chocolate cake with a creamy chocolate frosting.",
-      image: null,
+      image: dessert,
     },
   ],
   burgers: [

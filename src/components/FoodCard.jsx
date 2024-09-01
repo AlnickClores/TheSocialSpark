@@ -18,7 +18,11 @@ const FoodCard = (props) => {
 
             <h3 className="absolute bottom-0 left-0 p-2">
               <span className="text-[#ff8418] font-bold text-xl mr-2.5">
-                &#8369;{item.price}
+                {item.sizes ? (
+                  <>&#8369;{item.price.slice}</>
+                ) : (
+                  <>&#8369;{item.price}</>
+                )}
               </span>
               <span className="text-xl font-bold font-header text-white">
                 {item.name}
@@ -40,6 +44,7 @@ const FoodCard = (props) => {
                     image: item.image,
                     price: item.price,
                     name: item.name,
+                    sizes: item.sizes,
                   }}
                 >
                   {icons.plus}

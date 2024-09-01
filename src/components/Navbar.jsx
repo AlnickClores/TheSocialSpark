@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Logo from "../assets/icons/travelmug-logo.png";
 import { Link } from "react-router-dom";
 import { icons } from "../assets/icons/icons";
+import { useState } from "react";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
-  const handleToggle = () => {
+  const handleToggleMenu = () => {
     setOpen(!open);
   };
   return (
@@ -21,7 +22,12 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="block cursor-pointer z-50" onClick={handleToggle}>
+        <div
+          className="block cursor-pointer z-50"
+          onClick={() => {
+            handleToggleMenu();
+          }}
+        >
           {open ? icons.cross : icons.hamburger}
         </div>
         <div
@@ -52,9 +58,8 @@ const Navbar = () => {
             <li className="border-b-2 border-[#ff8418] pb-1">
               <Link to="/coffee">Coffee</Link>
             </li>
-
             <li className="border-b-2 border-[#ff8418] pb-1">
-              <Link to="/cakes">Cakes</Link>
+              <Link to="/cakess">Cakes</Link>
             </li>
           </ul>
         </div>

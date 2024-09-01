@@ -7,8 +7,9 @@ const OrderDetailPage = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState("slice");
 
-  const { image, price, name } = location.state || {};
+  const { image, price, name, sizes } = location.state || {};
 
   const handleGoBack = () => {
     navigate(-1);
@@ -24,6 +25,11 @@ const OrderDetailPage = (props) => {
     }
     setQuantity(quantity - 1);
   };
+
+  const handleSizeChange = (e) => {
+    setSelectedSize(e.target.value.toLowerCase());
+  };
+
   return (
     <div className="h-screen">
       <div className="relaive">
@@ -32,10 +38,34 @@ const OrderDetailPage = (props) => {
           {icons.cross}
         </button>
       </div>
+
       <div className="flex justify-between text-2xl font-bold my-5 px-3">
         <h1>{name}</h1>
-        <h1 className="text-[#ff8418]">&#8369;{price}</h1>
+        <h1 className="text-[#ff8418]">
+          &#8369;{sizes ? price[selectedSize] : price}
+        </h1>
       </div>
+
+      {sizes && (
+        <div className="flex flex-col my-5 px-3">
+          <h1 className="font-bold text-lg">
+            Cake Variation{" "}
+            <span className="font-normal text-sm text-gray-600">Pick 1</span>
+          </h1>
+          {sizes.map((size) => (
+            <label key={size} className="flex items-center gap-2 py-3 border-b">
+              <input
+                type="radio"
+                value={size.toLowerCase()}
+                checked={selectedSize === size.toLowerCase()}
+                onChange={handleSizeChange}
+              />
+              <span className="text-lg font-medium">{size}</span>
+            </label>
+          ))}
+        </div>
+      )}
+
       <div className="flex flex-col gap-2  px-3">
         <h1 className="text-lg font-semibold">
           Note to restaurant{" "}
