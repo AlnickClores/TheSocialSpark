@@ -14,14 +14,9 @@ const OrderDetailPage = (props) => {
   const { image, price, name, sizes } = location.state || {};
 
   const basePrice = sizes
-<<<<<<< HEAD
-    ? parseFloat(price[selectedSize.toLowerCase()])
-    : parseFloat(price);
-=======
     ? parseFloat(price[selectedSize.toLowerCase()]) ||
       parseFloat(price[selectedDrinkSize.toLowerCase()])
-    : parseFloat(price); 
->>>>>>> origin/main
+    : parseFloat(price);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -29,26 +24,17 @@ const OrderDetailPage = (props) => {
 
   const handleAddQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
-<<<<<<< HEAD
-=======
-    
->>>>>>> origin/main
   };
 
   const handleMinusQuantity = () => {
     if (quantity > 1) {
-<<<<<<< HEAD
       setQuantity((prevQuantity) => prevQuantity - 1);
-=======
-      setQuantity(prevQuantity => prevQuantity - 1);
->>>>>>> origin/main
     }
   };
 
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value.toLowerCase());
     setselectedDrinkSize(e.target.value.toLowerCase());
-    
   };
 
   const totalPrice = (basePrice * quantity).toFixed(2);
@@ -62,7 +48,7 @@ const OrderDetailPage = (props) => {
         </button>
       </div>
 
-      <div className="flex justify-between text-2xl font-bold my-5 px-3">
+      <div className="flex justify-between text-xl font-bold my-5 px-3">
         <h1>{name}</h1>
         <h1 className="text-[#ff8418]">&#8369;{totalPrice}</h1>
       </div>
@@ -70,10 +56,7 @@ const OrderDetailPage = (props) => {
       {sizes && (
         <div className="flex flex-col my-5 px-3">
           <h1 className="font-bold text-lg">
-            {sizes[0] === "small"
-            ?"Select Sizes"
-            :"Cake Variation"
-            }
+            {sizes[0] === "small" ? "Select Sizes" : "Cake Variation"}
             <span className="font-normal text-sm text-gray-600"> Pick 1</span>
           </h1>
           {sizes.map((size) => (
@@ -81,7 +64,11 @@ const OrderDetailPage = (props) => {
               <input
                 type="radio"
                 value={size.toLowerCase()}
-                checked={size === "Slice" ? selectedSize === size.toLowerCase() : selectedDrinkSize === size.toLowerCase()}
+                checked={
+                  size === "Slice"
+                    ? selectedSize === size.toLowerCase()
+                    : selectedDrinkSize === size.toLowerCase()
+                }
                 onChange={handleSizeChange}
               />
               <span className="text-lg font-medium">{size}</span>
