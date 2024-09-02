@@ -11,24 +11,29 @@ const OrderDetailPage = (props) => {
 
   const { image, price, name, sizes } = location.state || {};
 
+  const basePrice = sizes
+    ? parseFloat(price[selectedSize.toLowerCase()])
+    : parseFloat(price);
+
   const handleGoBack = () => {
     navigate(-1);
   };
 
   const handleAddQuantity = () => {
-    setQuantity(quantity + 1);
+    setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
   const handleMinusQuantity = () => {
-    if (quantity == 1) {
-      return;
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
     }
-    setQuantity(quantity - 1);
   };
 
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value.toLowerCase());
   };
+
+  const totalPrice = (basePrice * quantity).toFixed(2);
 
   return (
     <div className="h-screen">
@@ -41,9 +46,7 @@ const OrderDetailPage = (props) => {
 
       <div className="flex justify-between text-2xl font-bold my-5 px-3">
         <h1>{name}</h1>
-        <h1 className="text-[#ff8418]">
-          &#8369;{sizes ? price[selectedSize] : price}
-        </h1>
+        <h1 className="text-[#ff8418]">&#8369;{totalPrice}</h1>
       </div>
 
       {sizes && (
