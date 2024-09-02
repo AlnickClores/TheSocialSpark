@@ -19,7 +19,7 @@ const FoodCard = (props) => {
             <h3 className="absolute bottom-0 left-0 p-2">
               <span className="text-[#ff8418] font-bold text-xl mr-2.5">
                 {item.sizes ? (
-                  <>&#8369;{item.price.slice}</>
+                  <>&#8369;{item.price.slice}{item.price.small}</>
                 ) : (
                   <>&#8369;{item.price}</>
                 )}
