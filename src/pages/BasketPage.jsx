@@ -50,7 +50,7 @@ const BasketPage = () => {
             </div>
 
             {/* Price */}
-            <span className="text-lg">&#8369;{item.price}</span>
+            <span className="text-lg font-semibold">&#8369;{item.price}</span>
           </div>
         ))}
       </div>

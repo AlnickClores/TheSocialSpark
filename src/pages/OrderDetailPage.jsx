@@ -7,28 +7,39 @@ const OrderDetailPage = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [quantity, setQuantity] = useState(1);
+
   const [selectedSize, setSelectedSize] = useState("slice");
+  const [selectedDrinkSize, setselectedDrinkSize] = useState("small");
 
   const { image, price, name, sizes } = location.state || {};
+
+  const basePrice = sizes
+    ? parseFloat(price[selectedSize.toLowerCase()]) ||
+      parseFloat(price[selectedDrinkSize.toLowerCase()])
+    : parseFloat(price); 
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
   const handleAddQuantity = () => {
-    setQuantity(quantity + 1);
+    setQuantity((prevQuantity) => prevQuantity + 1);
+    
   };
 
   const handleMinusQuantity = () => {
-    if (quantity == 1) {
-      return;
+    if (quantity > 1) {
+      setQuantity(prevQuantity => prevQuantity - 1);
     }
-    setQuantity(quantity - 1);
   };
 
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value.toLowerCase());
+    setselectedDrinkSize(e.target.value.toLowerCase());
+    
   };
+
+  const totalPrice = (basePrice * quantity).toFixed(2);
 
   return (
     <div className="h-screen">
@@ -41,23 +52,24 @@ const OrderDetailPage = (props) => {
 
       <div className="flex justify-between text-2xl font-bold my-5 px-3">
         <h1>{name}</h1>
-        <h1 className="text-[#ff8418]">
-          &#8369;{sizes ? price[selectedSize] : price}
-        </h1>
+        <h1 className="text-[#ff8418]">&#8369;{totalPrice}</h1>
       </div>
 
       {sizes && (
         <div className="flex flex-col my-5 px-3">
           <h1 className="font-bold text-lg">
-            Cake Variation{" "}
-            <span className="font-normal text-sm text-gray-600">Pick 1</span>
+            {sizes[0] === "small"
+            ?"Select Sizes"
+            :"Cake Variation"
+            }
+            <span className="font-normal text-sm text-gray-600"> Pick 1</span>
           </h1>
           {sizes.map((size) => (
             <label key={size} className="flex items-center gap-2 py-3 border-b">
               <input
                 type="radio"
                 value={size.toLowerCase()}
-                checked={selectedSize === size.toLowerCase()}
+                checked={size === "Slice" ? selectedSize === size.toLowerCase() : selectedDrinkSize === size.toLowerCase()}
                 onChange={handleSizeChange}
               />
               <span className="text-lg font-medium">{size}</span>

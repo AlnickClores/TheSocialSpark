@@ -25,7 +25,7 @@ export const menu = {
       sizes: ["small", "medium", "large"],
       price: { small: "29.00", medium: "39.00", large: "49.00" },
       description: "Refreshing iced tea served with a slice of lemon.",
-      image: null,
+      image: spag,
     },
     {
       name: "Fruit Punch",
@@ -33,7 +33,7 @@ export const menu = {
       price: { small: "39.00", medium: "49.00", large: "59.00" },
       description:
         "Tropical fruit punch with a blend of pineapple, orange, and guava juices.",
-      image: null,
+      image: spag,
     },
   ],
   desserts: [
@@ -106,49 +106,49 @@ export const menu = {
       price: "200.00",
       description:
         "Juicy beef patty with lettuce, tomato, and our special sauce.",
-      image: null,
+      image: spag,
     },
     {
       name: "Caramelized Onion Burger",
       price: "150.00",
       description:
         "Beef patty with melted cheese, pickles, onions, and ketchup.",
-      image: null,
+      image: spag,
     },
     {
       name: "Three meat Burger",
       price: "200.00",
       description:
         "Beef patty topped with crispy bacon, cheddar cheese, and BBQ sauce.",
-      image: null,
+      image: spag,
     },
     {
       name: "Knights of the Table (Mini Burgers)",
       price: "240.00",
       description:
         "Grilled veggie patty with avocado, lettuce, tomato, and vegan mayo.",
-      image: null,
+      image: spag,
     },
     {
       name: "Clubhouse",
       price: "150.00",
       description:
         "Grilled veggie patty with avocado, lettuce, tomato, and vegan mayo.",
-      image: null,
+      image: spag,
     },
     {
       name: "Tuna Sandwich",
       price: "100.00",
       description:
         "Grilled veggie patty with avocado, lettuce, tomato, and vegan mayo.",
-      image: null,
+      image: spag,
     },
     {
       name: "TMC signature Burger",
       price: "160.00",
       description:
         "Grilled veggie patty with avocado, lettuce, tomato, and vegan mayo.",
-      image: null,
+      image: spag,
     },
   ],
   coffee: [
