@@ -9,6 +9,7 @@ import EditProfile from "./pages/EditProfile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
+import Page404 from "./pages/404";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -40,5 +41,9 @@ export const router = createBrowserRouter([
   {
     path: "/profile/:username",
     element: <PrivateRoute element={Profile} />,
+  },
+  {
+    path: "*",
+    element: <Page404 element={Page404} />,
   },
 ]);
