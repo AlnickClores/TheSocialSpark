@@ -1,9 +1,11 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { menu } from "../data/menuData";
-import { icons } from "../assets/icons/icons";
 
 const BasketPage = () => {
+  const location = useLocation();
+  const { items } = location.state || { items: [] }; // Get items from state
+
   const handleAddItems = () => {
     alert("On going");
   };
@@ -15,6 +17,11 @@ const BasketPage = () => {
   const handleSubmitMenu = () => {
     alert("Kelangan ba mag madaleeeeeee!!!");
   };
+
+  const totalAmount = items.reduce(
+    (total, item) => total + parseFloat(item.price),
+    0
+  );
 
   return (
     <div className="h-screen">
@@ -28,14 +35,14 @@ const BasketPage = () => {
       </div>
 
       <div className="px-3">
-        {menu["main-course"].map((item, index) => (
+        {items.map((item, index) => (
           <div
             key={index}
             className="flex items-center w-full gap-5 py-4 border-b"
           >
             {/* Quantity */}
             <span className="font-semibold border border-[#ff8428] px-1">
-              1x
+              {item.quantity}x
             </span>
 
             {/* Name and Edit */}
@@ -58,7 +65,7 @@ const BasketPage = () => {
       <div className="fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center gap-5 py-3 px-5 border-t rounded-xl">
         <div className="flex justify-between w-full text-xl">
           <span className="font-semibold">Total</span>
-          <span className="font-semibold">&#8369;188.00</span>
+          <span className="font-semibold">&#8369;{totalAmount.toFixed(2)}</span>
         </div>
 
         <button

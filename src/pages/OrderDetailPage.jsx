@@ -39,6 +39,14 @@ const OrderDetailPage = (props) => {
 
   const totalPrice = (basePrice * quantity).toFixed(2);
 
+  const selectedItem = {
+    name,
+    image,
+    quantity,
+    price: totalPrice,
+    size: selectedSize || selectedDrinkSize,
+  };
+
   return (
     <div className="h-screen">
       <div className="relaive">
@@ -104,7 +112,7 @@ const OrderDetailPage = (props) => {
           {icons.plusButton}
         </button>
       </div>
-      <AddToBasketButton />
+      <AddToBasketButton selectedItem={selectedItem} />
     </div>
   );
 };
