@@ -7,6 +7,7 @@ const OrderDetailPage = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [quantity, setQuantity] = useState(1);
+  const [note, setNote] = useState("");
 
   const [selectedSize, setSelectedSize] = useState("slice");
   const [selectedDrinkSize, setselectedDrinkSize] = useState("small");
@@ -37,12 +38,17 @@ const OrderDetailPage = (props) => {
     setselectedDrinkSize(e.target.value.toLowerCase());
   };
 
+  const handleNoteChane = (e) => {
+    setNote(e.target.value);
+  };
+
   const totalPrice = (basePrice * quantity).toFixed(2);
 
   const selectedItem = {
     name,
     image,
     quantity,
+    note: note,
     price: totalPrice,
     size: selectedSize || selectedDrinkSize,
   };
@@ -90,12 +96,12 @@ const OrderDetailPage = (props) => {
           Note to restaurant{" "}
           <span className="text-gray-600 text-xs">Optional</span>
         </h1>
-        <p
-          className="border-2 border-black p-2 text-sm text-gray-500"
-          onClick={() => alert("no function yet hehe - Alnick")}
-        >
-          Add your preference (e.g., Thigh Part)
-        </p>
+        <textarea
+          className="border-2 border-black p-2 text-sm text-gray-500 resize-none"
+          value={note}
+          onChange={handleNoteChane}
+          placeholder="Add your preference (e.g., Thigh Part)"
+        ></textarea>
       </div>
       <div className="flex items-center justify-center gap-5 mt-10 px-3">
         <button

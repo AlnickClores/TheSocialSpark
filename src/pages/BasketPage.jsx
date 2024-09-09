@@ -1,10 +1,12 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 const BasketPage = () => {
   const location = useLocation();
-  const { items } = location.state || { items: [] }; // Get items from state
+  const { items } = location.state || { items: [] };
 
   const handleAddItems = () => {
     alert("On going");
@@ -14,8 +16,37 @@ const BasketPage = () => {
     alert("Wala pa!!!");
   };
 
-  const handleSubmitMenu = () => {
-    alert("Kelangan ba mag madaleeeeeee!!!");
+  const handleSubmitMenu = async () => {
+    try {
+      const generateOrderID = () => Math.floor(1000 + Math.random() * 9000);
+      const orderID = generateOrderID();
+
+      const orderData = {
+        OrderID: orderID,
+        Status: "Pending",
+        Orders: items.map((item) => ({
+          item: item.name,
+          Quantity: item.quantity,
+          Price: item.price,
+          Note: item.note || "",
+        })),
+        TotalPrice: items.reduce(
+          (total, item) => total + parseFloat(item.price),
+          0
+        ),
+        Expiration: new Date().getTime() + 10 * 60 * 1000,
+      };
+
+      console.log("Order Data: ", orderData);
+
+      const ordersCollection = collection(db, "orders");
+      await addDoc(ordersCollection, orderData);
+
+      alert("Order placed successfully!");
+    } catch (error) {
+      console.error("Error placing order: ", error);
+      alert("Failed to place order. Please try again.");
+    }
   };
 
   const totalAmount = items.reduce(
