@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { BasketContext } from "../context/BasketContext";
 
 const AddToBasketButton = ({ selectedItem }) => {
   const navigate = useNavigate();
+  const { addToBasket } = useContext(BasketContext);
 
   const handleAddToBasket = () => {
-    navigate("/basket", {
-      state: { items: [selectedItem] },
-    });
+    addToBasket(selectedItem);
+    navigate("/basket");
   };
 
   return (

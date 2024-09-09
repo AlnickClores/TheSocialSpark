@@ -1,47 +1,55 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { BasketContext } from "../context/BasketContext";
+import OrderConfirmation from "../components/modals/OrderConfirmation";
 
 const BasketPage = () => {
-  const location = useLocation();
-  const { items } = location.state || { items: [] };
-
+  const navigate = useNavigate();
+  const { basketItems } = useContext(BasketContext);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [orderData, setOrderData] = useState(null);
+  const [confirmOrder, setConfirmOrder] = useState(false);
   const handleAddItems = () => {
-    alert("On going");
+    navigate("/menu");
   };
 
-  const handleEditItems = () => {
-    alert("Wala pa!!!");
+  const handleEditItems = (item) => {
+    alert(`Edit item: ${item.name}`);
   };
 
-  const handleSubmitMenu = async () => {
+  const handleSubmitMenu = () => {
+    const generateOrderID = () => Math.floor(1000 + Math.random() * 9000);
+    const orderID = generateOrderID();
+
+    const newOrderData = {
+      OrderID: orderID,
+      Status: "Pending",
+      Orders: basketItems.map((item) => ({
+        item: item.name,
+        Quantity: item.quantity,
+        Price: item.price,
+        Note: item.note || "",
+      })),
+      TotalPrice: basketItems.reduce(
+        (total, item) => total + parseFloat(item.price),
+        0
+      ),
+      Expiration: new Date().getTime() + 10 * 60 * 1000,
+    };
+    setOrderData(newOrderData);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmOrder = async () => {
     try {
-      const generateOrderID = () => Math.floor(1000 + Math.random() * 9000);
-      const orderID = generateOrderID();
-
-      const orderData = {
-        OrderID: orderID,
-        Status: "Pending",
-        Orders: items.map((item) => ({
-          item: item.name,
-          Quantity: item.quantity,
-          Price: item.price,
-          Note: item.note || "",
-        })),
-        TotalPrice: items.reduce(
-          (total, item) => total + parseFloat(item.price),
-          0
-        ),
-        Expiration: new Date().getTime() + 10 * 60 * 1000,
-      };
-
-      console.log("Order Data: ", orderData);
-
       const ordersCollection = collection(db, "orders");
       await addDoc(ordersCollection, orderData);
 
+      setShowConfirmation(false);
+      setOrderData(null);
       alert("Order placed successfully!");
     } catch (error) {
       console.error("Error placing order: ", error);
@@ -49,7 +57,12 @@ const BasketPage = () => {
     }
   };
 
-  const totalAmount = items.reduce(
+  const handleCancelOrder = () => {
+    setShowConfirmation(false);
+    setOrderData(null);
+  };
+
+  const totalAmount = basketItems.reduce(
     (total, item) => total + parseFloat(item.price),
     0
   );
@@ -66,7 +79,7 @@ const BasketPage = () => {
       </div>
 
       <div className="px-3">
-        {items.map((item, index) => (
+        {basketItems.map((item, index) => (
           <div
             key={index}
             className="flex items-center w-full gap-5 py-4 border-b"
@@ -81,7 +94,7 @@ const BasketPage = () => {
               <span className="font-semibold text-lg">{item.name}</span>
               <span
                 className="text-[blue] text-xs cursor-pointer"
-                onClick={handleEditItems}
+                onClick={() => handleEditItems(item)}
               >
                 Edit
               </span>
@@ -106,6 +119,13 @@ const BasketPage = () => {
           Place Order
         </button>
       </div>
+
+      {showConfirmation && (
+        <OrderConfirmation
+          onConfirm={handleConfirmOrder}
+          onCancel={handleCancelOrder}
+        />
+      )}
     </div>
   );
 };
