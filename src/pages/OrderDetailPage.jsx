@@ -12,7 +12,7 @@ const OrderDetailPage = (props) => {
   const [selectedSize, setSelectedSize] = useState("slice");
   const [selectedDrinkSize, setselectedDrinkSize] = useState("small");
 
-  const { image, price, name, sizes } = location.state || {};
+  const { image, price, name, sizes, category } = location.state || {};
 
   const basePrice = sizes
     ? parseFloat(price[selectedSize.toLowerCase()]) ||
@@ -38,7 +38,7 @@ const OrderDetailPage = (props) => {
     setselectedDrinkSize(e.target.value.toLowerCase());
   };
 
-  const handleNoteChane = (e) => {
+  const handleNoteChange = (e) => {
     setNote(e.target.value);
   };
 
@@ -50,12 +50,14 @@ const OrderDetailPage = (props) => {
     quantity,
     note: note,
     price: totalPrice,
-    size: selectedSize || selectedDrinkSize,
+    ...(category === "drinks" || category === "cakes"
+      ? { size: selectedSize || selectedDrinkSize }
+      : {}),
   };
 
   return (
     <div className="h-screen">
-      <div className="relaive">
+      <div className="relative">
         <img src={image} alt="food-image" />
         <button className="absolute top-2 left-2" onClick={handleGoBack}>
           {icons.cross}
@@ -67,10 +69,11 @@ const OrderDetailPage = (props) => {
         <h1 className="text-[#ff8418]">&#8369;{totalPrice}</h1>
       </div>
 
-      {sizes && (
+      {/* Conditionally render sizes if the category is "drinks" or "cakes" */}
+      {sizes && (category === "drinks" || category === "cakes") && (
         <div className="flex flex-col my-5 px-3">
           <h1 className="font-bold text-lg">
-            {sizes[0] === "small" ? "Select Sizes" : "Cake Variation"}
+            {category === "drinks" ? "Select Drink Size" : "Cake Variation"}
             <span className="font-normal text-sm text-gray-600"> Pick 1</span>
           </h1>
           {sizes.map((size) => (
@@ -99,7 +102,7 @@ const OrderDetailPage = (props) => {
         <textarea
           className="border-2 border-black p-2 text-sm text-gray-500 resize-none"
           value={note}
-          onChange={handleNoteChane}
+          onChange={handleNoteChange}
           placeholder="Add your preference (e.g., Thigh Part)"
         ></textarea>
       </div>

@@ -48,6 +48,7 @@ const FoodCard = (props) => {
                     price: item.price,
                     name: item.name,
                     sizes: item.sizes,
+                    category: props.category,
                   }}
                 >
                   {icons.plus}

@@ -12,6 +12,7 @@ const BasketPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const [confirmOrder, setConfirmOrder] = useState(false);
+
   const handleAddItems = () => {
     navigate("/menu");
   };
@@ -27,18 +28,22 @@ const BasketPage = () => {
     const newOrderData = {
       OrderID: orderID,
       Status: "Pending",
-      Orders: basketItems.map((item) => ({
-        item: item.name,
-        Quantity: item.quantity,
-        Price: item.price,
-        Note: item.note || "",
-      })),
+      Orders: basketItems.map((item) => {
+        return {
+          item: item.name,
+          Quantity: item.quantity,
+          Price: item.price,
+          Variation: item.size || "",
+          Note: item.note || "",
+        };
+      }),
       TotalPrice: basketItems.reduce(
         (total, item) => total + parseFloat(item.price),
         0
       ),
       Expiration: new Date().getTime() + 10 * 60 * 1000,
     };
+
     setOrderData(newOrderData);
     setShowConfirmation(true);
   };

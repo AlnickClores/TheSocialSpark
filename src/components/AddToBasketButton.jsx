@@ -7,6 +7,7 @@ const AddToBasketButton = ({ selectedItem }) => {
   const { addToBasket } = useContext(BasketContext);
 
   const handleAddToBasket = () => {
+    console.log(selectedItem);
     addToBasket(selectedItem);
     navigate("/basket");
   };
