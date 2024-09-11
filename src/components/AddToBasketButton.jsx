@@ -7,8 +7,16 @@ const AddToBasketButton = ({ selectedItem }) => {
   const { addToBasket } = useContext(BasketContext);
 
   const handleAddToBasket = () => {
-    console.log(selectedItem);
-    addToBasket(selectedItem);
+    // Generate a unique ID for the selected item
+    const itemWithUniqueId = {
+      ...selectedItem,
+      id: Date.now() + Math.random().toString(36).substring(2, 15), // Unique ID
+    };
+
+    console.log(itemWithUniqueId);
+
+    // Add item with unique ID to the basket
+    addToBasket(itemWithUniqueId);
     navigate("/basket");
   };
 
