@@ -41,7 +41,7 @@ const FoodCard = (props) => {
               <button className="bg-[#ff8418] font-bold text-xl rounded-full px-1.5">
                 <Link
                   to={{
-                    pathname: "/order-detail",
+                    pathname: "/item-detail",
                   }}
                   state={{
                     image: item.image,

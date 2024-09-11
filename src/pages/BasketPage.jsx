@@ -51,11 +51,20 @@ const BasketPage = () => {
   const handleConfirmOrder = async () => {
     try {
       const ordersCollection = collection(db, "orders");
-      await addDoc(ordersCollection, orderData);
+      const docRef = await addDoc(ordersCollection, orderData);
 
       setShowConfirmation(false);
       setOrderData(null);
       alert("Order placed successfully!");
+
+      navigate("/order-detail", {
+        state: {
+          orderId: orderData.OrderID,
+          orders: orderData.Orders,
+          price: orderData.TotalPrice,
+          status: "Pending",
+        },
+      });
     } catch (error) {
       console.error("Error placing order: ", error);
       alert("Failed to place order. Please try again.");
