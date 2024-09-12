@@ -5,21 +5,39 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { BasketContext } from "../context/BasketContext";
 import OrderConfirmation from "../components/modals/OrderConfirmation";
+import EditMenu from "../components/modals/EditMenuPage";
 
 const BasketPage = () => {
   const navigate = useNavigate();
-  const { basketItems } = useContext(BasketContext);
+  const { basketItems, setBasketItems } = useContext(BasketContext);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const [confirmOrder, setConfirmOrder] = useState(false);
+   const [isModalOpen, setIsmodalOpen] = useState(false);
+   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleAddItems = () => {
     navigate("/menu");
   };
 
-  const handleEditItems = (item) => {
-    alert(`Edit item: ${item.name}`);
-  };
+   const handleSaveChanges = (updatedItem) => {
+     setBasketItems((prevItems) =>
+       prevItems.map(
+         (item) => (item.id === updatedItem.id ? updatedItem : item) // Match by unique ID
+       )
+     );
+     setIsmodalOpen(false); // Close modal after saving
+   };
+
+   const handleEditItems = (item) => {
+     setIsmodalOpen(true);
+     setSelectedItem(item);
+   };
+
+   const handleCloseModal = () => {
+     setIsmodalOpen(false);
+     setSelectedItem(null);
+   };
 
   const handleSubmitMenu = () => {
     const generateOrderID = () => Math.floor(1000 + Math.random() * 9000);
@@ -138,6 +156,14 @@ const BasketPage = () => {
         <OrderConfirmation
           onConfirm={handleConfirmOrder}
           onCancel={handleCancelOrder}
+        />
+      )}
+      {isModalOpen && (
+        <EditMenu
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          item={selectedItem}
+          onSave={handleSaveChanges}
         />
       )}
     </div>
