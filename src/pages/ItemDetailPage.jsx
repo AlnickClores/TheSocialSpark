@@ -13,6 +13,8 @@ const ItemDetailPage = (props) => {
   const [selectedDrinkSize, setselectedDrinkSize] = useState("small");
 
   const { image, price, name, sizes, category } = location.state || {};
+  
+  let itemPrice = price
 
   const basePrice = sizes
     ? parseFloat(price[selectedSize.toLowerCase()]) ||
@@ -35,6 +37,9 @@ const ItemDetailPage = (props) => {
 
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value.toLowerCase());
+  };
+
+  const handleSizeDrinkChange = (e) => {
     setselectedDrinkSize(e.target.value.toLowerCase());
   };
 
@@ -50,9 +55,14 @@ const ItemDetailPage = (props) => {
     quantity,
     note: note,
     price: totalPrice,
-    ...(category === "drinks" || category === "cakes"
-      ? { size: selectedSize || selectedDrinkSize }
+    ...(category === "drinks"
+      ? { size: selectedDrinkSize }
+      : category === "cakes"
+      ? { size: selectedSize }
       : {}),
+    category,
+    sizes,
+    itemPrice,
   };
 
   return (
@@ -69,11 +79,10 @@ const ItemDetailPage = (props) => {
         <h1 className="text-[#ff8418]">&#8369;{totalPrice}</h1>
       </div>
 
-      {/* Conditionally render sizes if the category is "drinks" or "cakes" */}
-      {sizes && (category === "drinks" || category === "cakes") && (
+      {sizes && category === "drinks" && (
         <div className="flex flex-col my-5 px-3">
           <h1 className="font-bold text-lg">
-            {category === "drinks" ? "Select Drink Size" : "Cake Variation"}
+            Select Drink Size
             <span className="font-normal text-sm text-gray-600"> Pick 1</span>
           </h1>
           {sizes.map((size) => (
@@ -81,11 +90,27 @@ const ItemDetailPage = (props) => {
               <input
                 type="radio"
                 value={size.toLowerCase()}
-                checked={
-                  size === "Slice"
-                    ? selectedSize === size.toLowerCase()
-                    : selectedDrinkSize === size.toLowerCase()
-                }
+                checked={selectedDrinkSize === size.toLowerCase()}
+                onChange={handleSizeDrinkChange}
+              />
+              <span className="text-lg font-medium">{size}</span>
+            </label>
+          ))}
+        </div>
+      )}
+
+      {sizes && category === "cakes" && (
+        <div className="flex flex-col my-5 px-3">
+          <h1 className="font-bold text-lg">
+            Cake Variation
+            <span className="font-normal text-sm text-gray-600"> Pick 1</span>
+          </h1>
+          {sizes.map((size) => (
+            <label key={size} className="flex items-center gap-2 py-3 border-b">
+              <input
+                type="radio"
+                value={size.toLowerCase()}
+                checked={selectedSize === size.toLowerCase()}
                 onChange={handleSizeChange}
               />
               <span className="text-lg font-medium">{size}</span>
