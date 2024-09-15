@@ -10,34 +10,42 @@ import EditMenu from "../components/modals/EditMenuPage";
 const BasketPage = () => {
   const navigate = useNavigate();
   const { basketItems, setBasketItems } = useContext(BasketContext);
+  const [isModalOpen, setIsmodalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const [confirmOrder, setConfirmOrder] = useState(false);
-   const [isModalOpen, setIsmodalOpen] = useState(false);
-   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleAddItems = () => {
     navigate("/menu");
   };
 
-   const handleSaveChanges = (updatedItem) => {
-     setBasketItems((prevItems) =>
-       prevItems.map(
-         (item) => (item.id === updatedItem.id ? updatedItem : item) // Match by unique ID
-       )
-     );
-     setIsmodalOpen(false); // Close modal after saving
-   };
+  const handleEditItems = (item) => {
+    setIsmodalOpen(true);
+    setSelectedItem(item);
+  };
+  
+  const handleSaveChanges = (updatedItem) => {
+    if (updatedItem === null) {
+      // Remove the item from the basket
+      setBasketItems((prevItems) =>
+        prevItems.filter((item) => item.id !== selectedItem.id)
+      );
+    } else {
+      // Update the item in the basket
+      setBasketItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === updatedItem.id ? updatedItem : item
+        )
+      );
+    }
+    setIsmodalOpen(false);
+  };
 
-   const handleEditItems = (item) => {
-     setIsmodalOpen(true);
-     setSelectedItem(item);
-   };
-
-   const handleCloseModal = () => {
-     setIsmodalOpen(false);
-     setSelectedItem(null);
-   };
+  const handleCloseModal = () => {
+    setIsmodalOpen(false);
+    setSelectedItem(null);
+  };
 
   const handleSubmitMenu = () => {
     const generateOrderID = () => Math.floor(1000 + Math.random() * 9000);
@@ -100,7 +108,7 @@ const BasketPage = () => {
   );
 
   return (
-    <div className="h-screen">
+    <div className="h-screen overflow-auto">
       <Navbar />
 
       <div className="flex justify-between items-center px-3 my-5">
@@ -124,6 +132,7 @@ const BasketPage = () => {
             {/* Name and Edit */}
             <div className="flex flex-grow flex-col justify-between">
               <span className="font-semibold text-lg">{item.name}</span>
+              <span>{item.size ? item.size : ""}</span>
               <span
                 className="text-[blue] text-xs cursor-pointer"
                 onClick={() => handleEditItems(item)}
@@ -138,7 +147,7 @@ const BasketPage = () => {
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center gap-5 py-3 px-5 border-t rounded-xl">
+      <div className="fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center gap-5 py-3 px-5 border-t rounded-xl z-[1] bg-[whitesmoke]">
         <div className="flex justify-between w-full text-xl">
           <span className="font-semibold">Total</span>
           <span className="font-semibold">&#8369;{totalAmount.toFixed(2)}</span>

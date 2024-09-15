@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { icons } from "../../assets/icons/icons";
+import DeleteConfirmation from "../modals/DeleteConfirmation"; // Import the new modal
 
 const EditMenu = ({ isOpen, onClose, item, onSave }) => {
   const [quantity, setQuantity] = useState(item.quantity || 1);
-  const [selectedSize, setSelectedSize] = useState(item.sizes ? item.size || item.sizes[0] : '');
+  const [selectedSize, setSelectedSize] = useState(item.size || "");
+  const [pricePerItem, setPricePerItem] = useState(
+    item.itemPrice[selectedSize] || item.price / item.quantity
+  );
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete confirmation
 
   const handleSizeChange = (e) => {
-    setSelectedSize(e.target.value);
-  };
+    const newSize = e.target.value;
+    setSelectedSize(newSize);
 
-  const pricePerItem = item.price / item.quantity;
+    if (item.itemPrice[newSize]) {
+      setPricePerItem(parseFloat(item.itemPrice[newSize]));
+    }
+  };
 
   const handleIncrease = () => {
     if (quantity >= 9) {
@@ -23,18 +31,31 @@ const EditMenu = ({ isOpen, onClose, item, onSave }) => {
     if (quantity > 1) {
       setQuantity((prevQuantity) => prevQuantity - 1);
     } else {
-      alert("Quantity can't be less than 1.");
+      // Show the delete confirmation modal
+      setShowDeleteModal(true);
     }
   };
 
   const handleSave = () => {
-    const updatedItem = {
-      ...item,
-      quantity,
-      size: selectedSize,
-      price: (pricePerItem * quantity).toFixed(2),
-    };
-    onSave(updatedItem);
+    if (quantity < 1) {
+      // Remove the item if quantity is less than 1
+      onSave(null);
+    } else {
+      const updatedItem = {
+        ...item,
+        quantity,
+        ...(item.size && { size: selectedSize }),
+        price: (pricePerItem * quantity).toFixed(2),
+      };
+      onSave(updatedItem);
+    }
+    onClose();
+  };
+
+  const handleConfirmDelete = () => {
+    onSave(null); // Delete the item
+    onClose(); // Close the edit menu
+    setShowDeleteModal(false); // Close delete confirmation modal
   };
 
   const updatedPrice = (pricePerItem * quantity).toFixed(2);
@@ -61,32 +82,47 @@ const EditMenu = ({ isOpen, onClose, item, onSave }) => {
           </div>
         </div>
 
-        {(item.type === "drinks" || item.type === "cakes") && item.sizes && item.sizes.length > 0 && (
-          <div className="mb-6">
-            <h3 className="font-semibold text-lg text-[#ff8428] mb-2">
-              Select Size
-            </h3>
-            <div className="flex flex-col gap-4">
-              {item.sizes.map((size) => (
-                <label
-                  key={size}
-                  className="flex items-center gap-3 p-2 border border-gray-300 rounded-lg"
-                >
-                  <input
-                    type="radio"
-                    name="size"
-                    value={size}
-                    checked={selectedSize === size}
-                    onChange={handleSizeChange}
-                  />
-                  <span className="text-lg font-semibold">{size}</span>
-                </label>
-              ))}
-            </div>
+        {/* Size selection for drinks */}
+        {item.size && item.category === "drinks" && (
+          <div>
+            <h3 className="font-semibold mb-2">Select Size</h3>
+            {["small", "medium", "large"].map((size) => (
+              <div key={size}>
+                <input
+                  type="radio"
+                  id={size}
+                  name="size"
+                  value={size}
+                  checked={selectedSize === size}
+                  onChange={handleSizeChange}
+                />
+                <label htmlFor={size}>{size}</label>
+              </div>
+            ))}
           </div>
         )}
 
-        <div className="flex justify-between gap-2">
+        {/* Size selection for cakes */}
+        {item.size && item.category === "cakes" && (
+          <div>
+            <h3 className="font-semibold mb-2">Select Size</h3>
+            {["slice", "whole"].map((size) => (
+              <div key={size}>
+                <input
+                  type="radio"
+                  id={size}
+                  name="size"
+                  value={size}
+                  checked={selectedSize === size}
+                  onChange={handleSizeChange}
+                />
+                <label htmlFor={size}>{size}</label>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="flex justify-between gap-2 pt-[20px]">
           <button
             className="bg-gray-500 text-white px-4 py-2 rounded"
             onClick={onClose}
@@ -102,6 +138,13 @@ const EditMenu = ({ isOpen, onClose, item, onSave }) => {
           </button>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmation
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 };

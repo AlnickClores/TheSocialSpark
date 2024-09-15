@@ -10,7 +10,9 @@ export const BasketProvider = ({ children }) => {
   };
 
   return (
-    <BasketContext.Provider value={{ basketItems, addToBasket, setBasketItems }}>
+    <BasketContext.Provider
+      value={{ basketItems, addToBasket, setBasketItems }}
+    >
       {children}
     </BasketContext.Provider>
   );
