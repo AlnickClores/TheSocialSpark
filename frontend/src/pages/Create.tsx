@@ -81,7 +81,7 @@ const Create = () => {
   return (
     <div>
       <Navbar />
-      <form className="p-3" onSubmit={submitPost}>
+      <form className="p-3 mb-20" onSubmit={submitPost}>
         <h1 className="text-xl font-bold mt-5 mb-10">Create Post</h1>
         <div className="flex flex-col gap-3 mt-3">
           <div>

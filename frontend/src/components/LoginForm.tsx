@@ -26,7 +26,9 @@ const LoginForm = () => {
       );
 
       const { token } = response.data;
+      const { user } = response.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
       setError(null);
       navigate("/homepage");
