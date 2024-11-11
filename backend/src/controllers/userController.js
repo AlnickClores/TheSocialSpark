@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
 
     res.send({
       token,
-      user: { id: user.id, email: user.email, username: user.username },
+      user: { id: user.userID, email: user.email, username: user.username },
     });
   } catch (error) {
     console.error(error);

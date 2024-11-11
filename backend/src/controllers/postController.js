@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const createPost = require("../services/postServices/createPost");
 const fetchPost = require("../services/postServices/fetchPost");
+const deletePost = require("../services/postServices/deletePost");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_KEY;
@@ -43,6 +44,8 @@ exports.fetchPost = async (req, res) => {
     const posts = await fetchPost(userId);
 
     const formattedPosts = posts.map((post) => ({
+      postId: post.postId,
+      userId: post.userId,
       content: post.content,
       image: post.image ? post.image.toString("base64") : null,
       location: post.location,
@@ -54,5 +57,32 @@ exports.fetchPost = async (req, res) => {
   } catch (error) {
     console.error("Error fetching posts:", error);
     res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  const { postId } = req.params;
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized access" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.id;
+
+    const result = await deletePost(postId, userId);
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Post not found or unauthorized to delete." });
+    }
+
+    res.status(200).json({ message: "Post deleted successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error deleting the post." });
   }
 };
