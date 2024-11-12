@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import SampleImage from "../../assets/images/sample-image.jpg";
-import SampleImage1 from "../../assets/images/sample-image1.jpg";
-import SampleImage2 from "../../assets/images/sample-image2.jpg";
-import SampleImage3 from "../../assets/images/sample-image3.jpg";
 import {
   fetchUserPost,
   fetchUserData,
@@ -12,7 +8,7 @@ import {
 } from "../../utils/api";
 import { formatDatePost } from "../../utils/dateUtil";
 import { icons } from "../../assets/icons/icons";
-import PostOptions from "../modals/PostOptions";
+import PostOptions from "../modals/Posts/PostOptions";
 
 interface Post {
   postId: number;
@@ -161,15 +157,7 @@ const Post = () => {
                     alt="post image"
                   />
                 </div>
-              ) : (
-                <div className="py-1">
-                  <img
-                    className="rounded-lg"
-                    src={SampleImage}
-                    alt="post image"
-                  />
-                </div>
-              )}
+              ) : null}
 
               <span className="font-center text-sm">{post.content}</span>
             </div>
