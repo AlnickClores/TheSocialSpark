@@ -16,4 +16,7 @@ router.get("/fetch-post", post.fetchPost);
 // delete a post
 router.delete("/delete/:postId", post.deletePost);
 
+// star or unstar post
+router.post("/star/:postId", post.starPost);
+
 module.exports = router;

@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const createPost = require("../services/postServices/createPost");
 const fetchPost = require("../services/postServices/fetchPost");
 const deletePost = require("../services/postServices/deletePost");
+const starPost = require("../services/postServices/starPost");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_KEY;
@@ -84,5 +85,31 @@ exports.deletePost = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting the post." });
+  }
+};
+
+exports.starPost = async (req, res) => {
+  const { postId } = req.params;
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized access" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const userId = decodedToken.id;
+
+    if (!postId || isNaN(postId)) {
+      return res.status(400).json({ error: "Invalid postId" });
+    }
+
+    const result = await starPost.starPost(postId, userId);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error toggling star on post:", error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while starring the post" });
   }
 };
