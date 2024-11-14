@@ -5,6 +5,8 @@ import {
   fetchUserData,
   fetchSearchedUserData,
   fetchSearchedUserPost,
+  starPost,
+  checkIfStarred,
 } from "../../utils/api";
 import { formatDatePost } from "../../utils/dateUtil";
 import { icons } from "../../assets/icons/icons";
@@ -25,7 +27,9 @@ const Post = () => {
   const { username } = useParams();
   const isLoggedInProfilePage = location.pathname.endsWith("/profile");
 
-  const [starred, setStarred] = useState(false);
+  const [starredPosts, setStarredPosts] = useState<{ [key: number]: boolean }>(
+    {}
+  );
   const [saved, setSaved] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
   const [openPostOptions, setOpenPostOptions] = useState<number | null>(null);
@@ -37,8 +41,34 @@ const Post = () => {
     image: "",
   });
 
-  const handleStar = () => {
-    setStarred(!starred);
+  const handleStar = async (postId: number) => {
+    const currentStarredState = starredPosts[postId] ?? false;
+    const newStarredState = !currentStarredState;
+
+    setStarredPosts((prev) => ({ ...prev, [postId]: newStarredState }));
+
+    try {
+      const response = await starPost(postId);
+
+      if (response.starred !== undefined) {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.postId === postId
+              ? {
+                  ...post,
+                  stars: response.starred ? post.stars + 1 : post.stars - 1,
+                }
+              : post
+          )
+        );
+      } else {
+        console.log("Backend did not return the expected 'starred' field");
+        setStarredPosts((prev) => ({ ...prev, [postId]: currentStarredState }));
+      }
+    } catch (error) {
+      console.error("Error in star toggle:", error);
+      setStarredPosts((prev) => ({ ...prev, [postId]: currentStarredState }));
+    }
   };
 
   const handleSave = () => {
@@ -47,7 +77,6 @@ const Post = () => {
 
   useEffect(() => {
     const user = localStorage.getItem("user");
-
     if (user) {
       const userDataLogged = JSON.parse(user);
       setLoggedInUser(userDataLogged);
@@ -73,23 +102,32 @@ const Post = () => {
   useEffect(() => {
     const getUserPost = async () => {
       try {
+        if (!loggedInUser || !loggedInUser.username) {
+          return;
+        }
+
         const data = username
           ? await fetchSearchedUserPost(username)
           : await fetchUserPost();
 
-        if (data && isLoggedInProfilePage) {
-          setPosts(data);
-          console.log(data);
-        } else {
-          setPosts(data.posts);
-          console.log(data.posts);
+        const postsData = username ? data.posts : data;
+        setPosts(postsData);
+
+        for (const post of postsData) {
+          const isStarred = await checkIfStarred(post.postId, loggedInUser.id);
+
+          setStarredPosts((prev) => ({
+            ...prev,
+            [post.postId]: isStarred,
+          }));
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching posts:", error);
       }
     };
+
     getUserPost();
-  }, [username]);
+  }, [username, loggedInUser]);
 
   const togglePostOption = (postId: number, event: React.MouseEvent) => {
     event.stopPropagation();
@@ -162,10 +200,18 @@ const Post = () => {
               <span className="font-center text-sm">{post.content}</span>
             </div>
             <div className="flex justify-between mt-3 px-2">
-              <div className="flex items-center justify-center gap-1">
-                {!starred ? <>{icons.star}</> : <>{icons.starFilled}</>}
+              <div
+                className="flex items-center justify-center gap-1"
+                onClick={() => handleStar(post.postId)}
+              >
+                {starredPosts[post.postId] ? (
+                  <>{icons.starFilled}</>
+                ) : (
+                  <>{icons.star}</>
+                )}
                 <p className="text-sm">{post.stars}</p>
               </div>
+
               {!saved ? <>{icons.save}</> : <>{icons.saveFilled}</>}
             </div>
           </div>

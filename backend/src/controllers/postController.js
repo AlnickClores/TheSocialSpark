@@ -3,6 +3,7 @@ const createPost = require("../services/postServices/createPost");
 const fetchPost = require("../services/postServices/fetchPost");
 const deletePost = require("../services/postServices/deletePost");
 const starPost = require("../services/postServices/starPost");
+const isStarred = require("../services/postServices/checkStarredPost");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_KEY;
@@ -111,5 +112,17 @@ exports.starPost = async (req, res) => {
     return res
       .status(500)
       .json({ error: "An error occurred while starring the post" });
+  }
+};
+
+exports.isStarred = async (req, res) => {
+  const { postId, userId } = req.params;
+
+  try {
+    const result = await isStarred.isStarred(postId, userId);
+    res.json({ success: true, result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

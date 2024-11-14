@@ -19,4 +19,7 @@ router.delete("/delete/:postId", post.deletePost);
 // star or unstar post
 router.post("/star/:postId", post.starPost);
 
+// check if user already starred the post
+router.get("/is-starred/:postId/:userId", post.isStarred);
+
 module.exports = router;

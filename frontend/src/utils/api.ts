@@ -119,3 +119,42 @@ export const deletePost = async (postId: number) => {
     };
   }
 };
+
+export const starPost = async (postId: number) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No token found.");
+  }
+
+  try {
+    const response = await axios.post(
+      `http://localhost:3000/post/star/${postId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const checkIfStarred = async (postId: number, userId: number) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/post/is-starred/${postId}/${userId}`
+    );
+
+    const isStarred = response.data?.result;
+
+    return isStarred === true;
+  } catch (error) {
+    console.error("Error in checkIfStarred API call:", error);
+    return false;
+  }
+};

@@ -1,0 +1,8 @@
+TODO:
+
+1. Finish the star and unstar feature (frontend).
+2. Do the save and unsave post feature (frontend and backend).
+3. When user clicks on the following and followers on their profile, it should show the list of their following and their followers.
+4. Do the recent searches feature - show a list of history of searches.
+5. Add necessary confirmation messages (e.g. logout).
+6. Deploy and share.
