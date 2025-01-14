@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import { ReactComponent as PhotoFilm } from "../assets/icons/photo-film-solid.svg";
 import axios from "axios";
+import testImage from "../assets/images/sample-image.jpg";
 
 type PostState = {
   content: string;
@@ -97,17 +98,43 @@ const Create = () => {
           </div>
           <div>
             <h1 className="font-semibold mb-2">Add Photos</h1>
-            <div className="flex flex-col justify-center items-center gap-5 py-8 bg-[#121212] rounded-lg border border-gray-600">
-              <div>
-                <PhotoFilm className="text-gray-600 fill-current w-28" />
-              </div>
-              <div className="text-center">
-                <p className="font-bold text-lg">Drag photo here</p>
-                <p className="text-sm text-gray-400 font-light">
-                  PNG, JPG, SVG
-                </p>
-              </div>
-              <div>
+            <div
+              className="relative flex flex-col justify-center items-center gap-5 bg-[#121212] rounded-lg border-2 border-dashed border-gray-600"
+              style={{
+                padding: post.image ? "8px" : "48px 0px",
+              }}
+            >
+              {post.image ? (
+                <div className="w-full h-full rounded-lg overflow-hidden bg-black">
+                  <img
+                    src={URL.createObjectURL(post.image)}
+                    alt="Uploaded Preview"
+                  />
+                </div>
+              ) : null}
+
+              {!post.image && (
+                <>
+                  <PhotoFilm className="text-gray-600 fill-current w-28" />
+                  <div className="text-center">
+                    <p className="font-bold text-lg">Drag photo here</p>
+                    <p className="text-sm text-gray-400 font-light">
+                      PNG, JPG, SVG
+                    </p>
+                  </div>
+                </>
+              )}
+
+              <div
+                style={
+                  post.image
+                    ? {
+                        position: "absolute",
+                        bottom: 10,
+                      }
+                    : {}
+                }
+              >
                 {post.image ? (
                   <button className="bg-[#3a3a3a] px-4 py-2 rounded-md text-sm font-semibold cursor-not-allowed">
                     Image Added
