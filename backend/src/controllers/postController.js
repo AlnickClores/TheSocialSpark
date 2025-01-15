@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const createPost = require("../services/postServices/createPost");
 const fetchPost = require("../services/postServices/fetchPost");
+const fetchSpecificPost = require("../services/postServices/fetchSpecificPost");
 const deletePost = require("../services/postServices/deletePost");
+const editPost = require("../services/postServices/editPost");
 const starPost = require("../services/postServices/starPost");
 const isStarred = require("../services/postServices/checkStarredPost");
 require("dotenv").config();
@@ -62,6 +64,41 @@ exports.fetchPost = async (req, res) => {
   }
 };
 
+exports.fetchSpecificPost = async (req, res) => {
+  const { postId } = req.params;
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized: Token missing" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.id;
+
+    const post = await fetchSpecificPost(postId);
+
+    if (!post) {
+      return res.status(404).send({ message: "Post not found" });
+    }
+
+    const formattedPost = {
+      postId: post.postId,
+      userId: post.userId,
+      content: post.content,
+      image: post.image ? post.image.toString("base64") : null,
+      location: post.location,
+      stars: post.stars,
+      date_created: post.date_created,
+    };
+
+    res.status(200).send(formattedPost);
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
 exports.deletePost = async (req, res) => {
   const { postId } = req.params;
   const token = req.headers.authorization?.split(" ")[1];
@@ -86,6 +123,39 @@ exports.deletePost = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting the post." });
+  }
+};
+
+exports.editPost = async (req, res) => {
+  const { postId } = req.params;
+  const { content, location } = req.body;
+  const image = req.file;
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized access" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.id;
+
+    const result = await editPost(postId, userId, { content, image, location });
+
+    if (result.error) {
+      return res.status(400).json({ message: result.error });
+    }
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Post not found or unauthorized to edit." });
+    }
+
+    res.status(200).json({ message: "Post edited successfully." });
+  } catch (error) {
+    console.error("Error editing post:", error);
+    res.status(500).json({ message: "Error editing the post." });
   }
 };
 

@@ -13,8 +13,14 @@ router.post("/create-post", upload.single("image"), post.createPost);
 // fetch posts
 router.get("/fetch-post", post.fetchPost);
 
+//fetch specific post
+router.get("/:postId", post.fetchSpecificPost);
+
 // delete a post
 router.delete("/delete/:postId", post.deletePost);
+
+// edit a post
+router.put("/edit/:postId", post.editPost);
 
 // star or unstar post
 router.post("/star/:postId", post.starPost);
