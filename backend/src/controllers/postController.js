@@ -127,35 +127,27 @@ exports.deletePost = async (req, res) => {
 };
 
 exports.editPost = async (req, res) => {
-  const { postId } = req.params;
-  const { content, location } = req.body;
-  const image = req.file;
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized access" });
+    return res.status(401).send({ message: "Unauthorized: Token missing" });
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
+    const { postId } = req.params;
+    const { content, location } = req.body;
+    const image = req.file;
 
-    const result = await editPost(postId, userId, { content, image, location });
+    const imageData = image ? image.buffer : null;
 
-    if (result.error) {
-      return res.status(400).json({ message: result.error });
-    }
+    await editPost(userId, postId, content, imageData, location);
 
-    if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: "Post not found or unauthorized to edit." });
-    }
-
-    res.status(200).json({ message: "Post edited successfully." });
+    res.status(200).send({ message: "Post updated successfully." });
   } catch (error) {
-    console.error("Error editing post:", error);
-    res.status(500).json({ message: "Error editing the post." });
+    console.error("Error updating post:", error);
+    res.status(500).send({ message: "Internal server error" });
   }
 };
 

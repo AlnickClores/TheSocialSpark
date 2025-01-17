@@ -20,7 +20,7 @@ router.get("/:postId", post.fetchSpecificPost);
 router.delete("/delete/:postId", post.deletePost);
 
 // edit a post
-router.put("/edit/:postId", post.editPost);
+router.put("/edit/:postId", upload.single("image"), post.editPost);
 
 // star or unstar post
 router.post("/star/:postId", post.starPost);

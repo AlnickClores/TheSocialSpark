@@ -1,21 +1,21 @@
 const connection = require("../../database/connection");
 
-const editPost = async (postId, userId, updateFields) => {
+const editPost = async (userId, postId, content, image, location) => {
   try {
     const updates = [];
     const values = [];
 
-    if (updateFields.content !== undefined) {
+    if (content !== undefined) {
       updates.push("content = ?");
-      values.push(updateFields.content);
+      values.push(content);
     }
-    if (updateFields.image !== undefined) {
+    if (image !== undefined) {
       updates.push("image = ?");
-      values.push(updateFields.image);
+      values.push(image);
     }
-    if (updateFields.location !== undefined) {
+    if (location !== undefined) {
       updates.push("location = ?");
-      values.push(updateFields.location);
+      values.push(location);
     }
 
     values.push(postId, userId);
