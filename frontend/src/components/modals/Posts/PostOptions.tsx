@@ -37,10 +37,14 @@ const PostOptions: React.FC<PostOptionsProps> = ({
     }
   };
 
+  const handleEditPost = async (postId: number) => {
+    navigate(`/editpost/${[postId]}`);
+  };
+
   return (
     <div className="absolute right-0 mt-2 w-32 bg-[#121212] border border-gray-600 rounded shadow-lg z-10">
       <button
-        onClick={() => onEdit(postId)}
+        onClick={() => handleEditPost(postId)}
         className="w-full text-left px-4 py-2 text-sm font-semibold hover:bg-gray-100"
       >
         Edit Post

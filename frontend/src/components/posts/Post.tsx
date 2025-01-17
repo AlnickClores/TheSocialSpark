@@ -131,7 +131,6 @@ const Post = () => {
 
   const togglePostOption = (postId: number, event: React.MouseEvent) => {
     event.stopPropagation();
-    console.log("Toggling post options for postId:", postId);
     setOpenPostOptions(openPostOptions === postId ? null : postId);
   };
 
@@ -190,7 +189,7 @@ const Post = () => {
               {post.image ? (
                 <div className="py-1">
                   <img
-                    className="rounded-lg"
+                    className="rounded-lg w-full h-full object-cover"
                     src={`data:image/jpeg;base64,${post.image}`}
                     alt="post image"
                   />

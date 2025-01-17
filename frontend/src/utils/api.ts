@@ -120,6 +120,72 @@ export const deletePost = async (postId: number) => {
   }
 };
 
+export const fetchPostById = async (postId: Number) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No token found.");
+  }
+
+  try {
+    const response = await axios.get(`http://localhost:3000/post/${postId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      return {
+        success: true,
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        message: "Failed to fetch post data.",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error occurred while fetching the post.",
+    };
+  }
+};
+
+export const editPost = async (postId: number, formData: FormData) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No token found.");
+  }
+
+  try {
+    const response = await axios.put(
+      `http://localhost:3000/post/edit/${postId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      return { success: true, message: "Post edited successfully." };
+    } else {
+      return { success: false, message: "Failed to edit the post." };
+    }
+  } catch (error) {
+    console.error("Error editing post:", error);
+    return {
+      success: false,
+      message: "An error occurred while editing the post.",
+    };
+  }
+};
+
 export const starPost = async (postId: number) => {
   const token = localStorage.getItem("token");
 
