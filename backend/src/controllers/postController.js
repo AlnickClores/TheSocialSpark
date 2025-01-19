@@ -137,10 +137,18 @@ exports.editPost = async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
     const { postId } = req.params;
-    const { content, location } = req.body;
+    const { content, location, removeImage } = req.body;
     const image = req.file;
 
-    const imageData = image ? image.buffer : null;
+    let imageData = null;
+
+    if (image) {
+      imageData = image.buffer;
+    } else if (removeImage === "true") {
+      imageData = null;
+    } else {
+      imageData = undefined;
+    }
 
     await editPost(userId, postId, content, imageData, location);
 

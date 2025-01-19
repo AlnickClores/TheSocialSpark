@@ -120,8 +120,12 @@ const EditPost = () => {
 
       if (fileInputRef.current && fileInputRef.current.files?.[0]) {
         formData.append("image", fileInputRef.current.files[0]);
-      } else if (post.image) {
-        formData.append("image", post.image);
+      } else if (
+        !fileInputRef.current?.files?.[0] &&
+        post.image &&
+        !updatePost.image
+      ) {
+        formData.append("removeImage", "true");
       }
 
       const response = await axios.put(
