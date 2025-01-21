@@ -9,6 +9,7 @@ import {
 import { formatDatePost } from "../utils/dateUtil";
 import { icons } from "../assets/icons/icons";
 import Navbar from "../components/Navbar";
+import PostOptions from "../components/modals/Posts/PostOptions";
 
 interface Post {
   content: string;
@@ -39,6 +40,12 @@ const PostPage = () => {
   const [loggedInUser, setLoggedInUser] = useState<LoggedUser | null>(null);
   const [starred, setStarred] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [openPostOptions, setOpenPostOptions] = useState<number | null>(null);
+
+  const togglePostOption = (postId: number, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setOpenPostOptions(openPostOptions === postId ? null : postId);
+  };
 
   const parsedPostId = postId ? parseInt(postId, 10) : 0;
 
@@ -125,6 +132,14 @@ const PostPage = () => {
     setSaved((prev) => !prev);
   };
 
+  const handleEdit = (postId: number) => {
+    console.log("Edit post with id:", postId);
+  };
+
+  const handleDelete = (postId: number) => {
+    console.log("Delete post with id:", postId);
+  };
+
   return (
     <div>
       <Navbar />
@@ -146,6 +161,27 @@ const PostPage = () => {
                 <p className="text-slate-300 text-sm">
                   {formatDatePost(post.date_created)}
                 </p>
+              </div>
+              <div
+                className="ml-auto relative"
+                onClick={(e) => {
+                  if (loggedInUser && loggedInUser.id === post.userId) {
+                    togglePostOption(post.postId, e);
+                  }
+                }}
+              >
+                {loggedInUser && loggedInUser.id === post.userId && (
+                  <>
+                    {icons.ellipsisPost}
+                    {openPostOptions === post.postId && (
+                      <PostOptions
+                        postId={parsedPostId}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                      />
+                    )}
+                  </>
+                )}
               </div>
             </div>
             <p className="my-2 mx-1 text-slate-300 text-sm">{post.location}</p>

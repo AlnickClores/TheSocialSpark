@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { fetchPostById, editPost } from "../utils/api";
+import { fetchPostById } from "../utils/api";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { ReactComponent as PhotoFilm } from "../assets/icons/photo-film-solid.svg";
@@ -142,7 +142,7 @@ const EditPost = () => {
       if (response.status === 200) {
         setPost(updatePost);
         alert("Post updated successfully.");
-        navigate("/profile");
+        navigate(`/post/${postId}`);
       }
     } catch (error) {
       console.error("Error updating post:", error);
