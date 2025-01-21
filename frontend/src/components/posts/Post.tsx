@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   fetchUserPost,
   fetchUserData,
@@ -25,6 +25,7 @@ interface Post {
 const Post = () => {
   const location = useLocation();
   const { username } = useParams();
+  const navigate = useNavigate();
   const isLoggedInProfilePage = location.pathname.endsWith("/profile");
 
   const [starredPosts, setStarredPosts] = useState<{ [key: number]: boolean }>(
@@ -149,6 +150,7 @@ const Post = () => {
           <div
             className="my-2 py-3 px-2 bg-[#121212] rounded-xl border border-gray-600"
             key={post.postId}
+            onClick={() => navigate(`/post/${post.postId}`)}
           >
             <div className="flex items-center">
               {userData.image ? (

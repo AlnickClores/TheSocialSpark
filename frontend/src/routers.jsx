@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
 import PrivateRoute from "./components/PrivateRoute";
 import Page404 from "./pages/404";
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
   {
     path: "/editpost/:postId",
     element: <PrivateRoute element={EditPost} />,
+  },
+  {
+    path: "/post/:postId",
+    element: <PrivateRoute element={PostPage} />,
   },
   {
     path: "/profile/:username",
