@@ -88,6 +88,40 @@ exports.getUserData = async (req, res) => {
   }
 };
 
+exports.getSpecificUserData = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized: Token missing" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log("Decoded JWT:", decoded);
+    const { userId } = req.params;
+
+    const [rows] = await connection.execute(
+      "SELECT userID, username, email, bio, date_joined, image, location FROM user_tbl WHERE userID = ?",
+      [userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const user = rows[0];
+
+    if (user.image) {
+      user.image = `http://localhost:3000/uploads/${user.image}`;
+    }
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    res.status(401).send({ message: "Invalid token" });
+  }
+};
+
 exports.updateProfile = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 

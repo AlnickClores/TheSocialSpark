@@ -11,6 +11,9 @@ router.get("/db-connection", dbController.checkDbConnection);
 // fetch user data
 router.get("/user", usersController.getUserData);
 
+// fetch specific user data
+router.get("/user/:userId", usersController.getSpecificUserData);
+
 // register
 router.post("/registration", usersController.registration);
 
