@@ -6,6 +6,7 @@ import { formatDate } from "../utils/dateUtil";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { icons } from "../assets/icons/icons";
+import FollowingFollowers from "./modals/FollowingFollowers";
 
 const ProfileHeader = () => {
   const location = useLocation();
@@ -13,8 +14,11 @@ const ProfileHeader = () => {
   const isLoggedInProfilePage = location.pathname.endsWith("/profile");
   const [isFollowing, setIsFollowing] = useState(false);
   const { username } = useParams();
+  const [modalOpen, setModalOpen] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
+  const [followers, setFollowers] = useState(null);
+  const [following, setFollowing] = useState(null);
   const [userData, setUserData] = useState({
     userID: "",
     username: "",
@@ -23,6 +27,7 @@ const ProfileHeader = () => {
     date_joined: "",
     image: "",
   });
+  const [selectedAction, setAction] = useState("");
 
   useEffect(() => {
     const getUserData = async () => {
@@ -36,8 +41,10 @@ const ProfileHeader = () => {
           `http://localhost:3000/users/${data.userID}/followers-following`
         );
 
-        setFollowerCount(response.data.followerCount);
-        setFollowingCount(response.data.followingCount);
+        setFollowers(response.data.followers);
+        setFollowing(response.data.following);
+        setFollowerCount(response.data.followers.length);
+        setFollowingCount(response.data.following.length);
 
         if (username) {
           const token = localStorage.getItem("token");
@@ -55,6 +62,18 @@ const ProfileHeader = () => {
     };
     getUserData();
   }, [username]);
+
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [modalOpen]);
 
   const handleFollowUser = async () => {
     const confirmFollow = window.confirm(`Follow ${username}?`);
@@ -124,8 +143,24 @@ const ProfileHeader = () => {
       console.error(error);
     }
   };
+
+  const handleOpenModal = (action: string) => {
+    setModalOpen(!modalOpen);
+    setAction(action);
+  };
+
   return (
     <div>
+      {modalOpen && (
+        <div className={`${modalOpen ? "block" : "hidden"}`}>
+          <FollowingFollowers
+            handleOpenModal={handleOpenModal}
+            followers={followers}
+            following={following}
+            action={selectedAction}
+          />
+        </div>
+      )}
       <div className="flex items-center justify-between mt-5">
         {userData.image ? (
           <img
@@ -182,11 +217,17 @@ const ProfileHeader = () => {
         </div>
       </div>
       <div className="flex gap-3 my-3 pl-0.5">
-        <div className="flex gap-1 text-sm">
+        <div
+          className="flex gap-1 text-sm"
+          onClick={() => handleOpenModal("following")}
+        >
           <h1 className="font-semibold">{followingCount}</h1>
           <h1 className="text-gray-400">Following</h1>
         </div>
-        <div className="flex gap-1 text-sm">
+        <div
+          className="flex gap-1 text-sm"
+          onClick={() => handleOpenModal("followers")}
+        >
           <h1 className="font-semibold">{followerCount}</h1>
           <h1 className="text-gray-400">Followers</h1>
         </div>
