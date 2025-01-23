@@ -309,8 +309,12 @@ exports.getFollowersAndFollowing = async (req, res) => {
   }
 
   try {
-    const { followerCount, followingCount } = await fCounts(userId);
-    res.status(200).json({ followerCount, followingCount });
+    const { followers, following } = await fCounts(userId);
+
+    res.status(200).json({
+      followers,
+      following,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
