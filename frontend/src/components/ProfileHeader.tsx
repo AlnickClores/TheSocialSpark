@@ -158,6 +158,8 @@ const ProfileHeader = () => {
             followers={followers}
             following={following}
             action={selectedAction}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
           />
         </div>
       )}

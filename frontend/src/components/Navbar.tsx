@@ -47,7 +47,7 @@ const Navbar = () => {
 
       <div className="flex w-full justify-around bg-[#121212] bottom-0 py-3 rounded-t-2xl fixed md:hidden">
         <div
-          className={`flex flex-col justify-center items-center py-1 px-3 ${
+          className={`flex flex-col justify-center items-center py-1 px-6 ${
             isActive("/homepage")
               ? "bg-gray-800 text-[#bb86fc] rounded-lg font-semibold"
               : "text-gray-400"
@@ -58,7 +58,7 @@ const Navbar = () => {
         </div>
 
         <div
-          className={`flex flex-col justify-center items-center py-1 px-3 ${
+          className={`flex flex-col justify-center items-center py-1 px-6 ${
             isActive("/search")
               ? "bg-gray-800 text-[#bb86fc] rounded-lg font-semibold"
               : "text-gray-400"
@@ -69,7 +69,7 @@ const Navbar = () => {
         </div>
 
         <div
-          className={`flex flex-col justify-center items-center py-1 px-3 ${
+          className={`flex flex-col justify-center items-center py-1 px-6 ${
             isActive("/create")
               ? "bg-gray-800 text-[#bb86fc] rounded-lg font-semibold"
               : "text-gray-400"
@@ -80,7 +80,7 @@ const Navbar = () => {
         </div>
 
         <div
-          className={`flex flex-col justify-center items-center py-1 px-3 ${
+          className={`flex flex-col justify-center items-center py-1 px-6 ${
             isActive("/saved")
               ? "bg-gray-800 text-[#bb86fc] rounded-lg font-semibold"
               : "text-gray-400"

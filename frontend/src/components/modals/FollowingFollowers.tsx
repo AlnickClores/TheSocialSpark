@@ -1,6 +1,14 @@
 import { icons } from "../../assets/icons/icons";
+import { useNavigate } from "react-router-dom";
 
 const FollowingFollowers = (props: any) => {
+  const navigate = useNavigate();
+
+  const navigateToProfile = (username: string) => {
+    navigate(`/profile/${username}`);
+    props.setModalOpen(!props.modalOpen);
+  };
+
   return (
     <div
       className="bg-[#121212] border border-gray-600 p-3 rounded-xl h-96 w-[85%] absolute left-2/4 top-2/4 overflow-scroll"
@@ -19,9 +27,10 @@ const FollowingFollowers = (props: any) => {
         <div className="mt-5">
           {props.action === "following"
             ? props.following.map((data: any) => (
-                <div
-                  className="flex items-center gap-2 my-3 border border-gray-600 px-3 py-2 rounded-md"
+                <button
+                  className="flex items-center gap-2 my-3 border border-gray-600 px-3 py-2 rounded-md w-full"
                   key={data.userID}
+                  onClick={() => navigateToProfile(data.username)}
                 >
                   <img
                     src={`http://localhost:3000/uploads/${data.image}`}
@@ -32,12 +41,13 @@ const FollowingFollowers = (props: any) => {
                   <h1 className="font-semibold text-sm text-gray-300">
                     {data.username}
                   </h1>
-                </div>
+                </button>
               ))
             : props.followers.map((data: any) => (
-                <div
-                  className="flex items-center gap-2 my-3 border border-gray-600 px-3 py-2 rounded-md"
+                <button
+                  className="flex items-center gap-2 my-3 border border-gray-600 px-3 py-2 rounded-md w-full"
                   key={data.userID}
+                  onClick={() => navigateToProfile(data.username)}
                 >
                   {data.image ? (
                     <img
@@ -52,7 +62,7 @@ const FollowingFollowers = (props: any) => {
                   <h1 className="font-semibold text-sm text-gray-300">
                     {data.username}
                   </h1>
-                </div>
+                </button>
               ))}
         </div>
       </div>
