@@ -1,8 +1,10 @@
 TODO:
 
-1. Finish the star and unstar feature (frontend). - DONE
-2. Do the save and unsave post feature (frontend and backend).
-3. When user clicks on the following and followers on their profile, it should show the list of their following and their followers.
-4. Do the recent searches feature - show a list of history of searches.
-5. Add necessary confirmation messages (e.g. logout).
-6. Deploy and share.
+1. Finish the star and unstar feature ( frontend ). - DONE
+2. Do the edit post functionality. - DONE
+3. Make a specific page for every posts. - DONE
+4. When user clicks on the following and followers on their profile, it should show the list of their following and their followers ( Modal ). If the user clicks on the user, user will then redirect to its profile page. - DONE
+5. Do the save and unsave post feature ( frontend and backend ).
+6. Do the recent searches feature - show a list of history of searches.
+7. Add necessary confirmation messages ( e.g. logout ).
+8. Deploy and share.
