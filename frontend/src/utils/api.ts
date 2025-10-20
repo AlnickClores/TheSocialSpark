@@ -20,6 +20,22 @@ export const fetchUserData = async () => {
   }
 };
 
+export const fetchFollowedUsersPosts = async () => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/post/followed-users-posts`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch followed users posts.", error);
+  }
+};
+
 export const fetchUserPost = async () => {
   const token = localStorage.getItem("token");
 
