@@ -18,9 +18,6 @@ router.post("/create-post", upload.single("image"), post.createPost);
 // fetch posts
 router.get("/fetch-post", post.fetchPost);
 
-//fetch specific post
-router.get("/:postId", post.fetchSpecificPost);
-
 // delete a post
 router.delete("/delete/:postId", post.deletePost);
 
@@ -34,26 +31,9 @@ router.post("/star/:postId", post.starPost);
 router.get("/is-starred/:postId/:userId", post.isStarred);
 
 // fetch the posts of the followed users
-router.get("/followed-users-posts", async (req, res) => {
-  try {
-    const userId = req.user.id;
+router.get("/followed-users-posts", post.fetchFollowedUsersPosts);
 
-    const query = `
-          SELECT p.postId, p.userId, p.content, p.image, p.location, p.stars, p.date_created, u.username, u.profile_picture 
-          FROM post_tbl p
-          JOIN followers_tbl f ON p.userId = f.followed_id
-          JOIN user_tbl u ON p.userId = u.userId
-          WHERE f.follower_id = ?
-          ORDER BY p.date_created DESC
-      `;
-
-    const [posts] = await db.promise().query(query, [userId]);
-
-    res.json(posts);
-  } catch (error) {
-    console.error("Error fetching followed users' posts:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+//fetch specific post
+router.get("/:postId", post.fetchSpecificPost);
 
 module.exports = router;

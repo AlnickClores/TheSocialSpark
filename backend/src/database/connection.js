@@ -4,7 +4,7 @@ const connection = mysql.createPool({
   host: "localhost",
   user: "root",
   database: "social_spark",
-  password: "knotz2k3",
+  password: "Knotz@2k3",
 });
 
 module.exports = connection;
