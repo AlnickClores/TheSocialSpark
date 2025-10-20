@@ -48,4 +48,7 @@ router.get(
 // check if the logged in user already followed the visited profile of other user
 router.get("/check-follow-status/:username", usersController.checkFollowStatus);
 
+// get the image of the user by username for the recent searches
+router.get("/image/:username", usersController.getUserImageByUsername);
+
 module.exports = router;

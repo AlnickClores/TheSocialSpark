@@ -350,3 +350,30 @@ exports.checkFollowStatus = async (req, res) => {
     console.error(error);
   }
 };
+
+exports.getUserImageByUsername = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Token is missing" });
+  }
+
+  try {
+    const { username } = req.params;
+
+    const [rows] = await connection.execute(
+      "SELECT image FROM user_tbl WHERE username = ?",
+      [username]
+    );
+
+    if (rows.length === 0) {
+      throw new Error("User not found");
+    }
+
+    const user = rows[0];
+
+    return res.status(200).json({ image: user.image });
+  } catch (error) {
+    console.error(error);
+  }
+};
