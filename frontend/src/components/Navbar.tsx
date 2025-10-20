@@ -45,7 +45,7 @@ const Navbar = () => {
         )}
       </div>
 
-      <div className="flex w-full justify-around bg-[#121212] bottom-0 py-3 rounded-t-2xl fixed md:hidden">
+      <div className="flex w-full justify-around bg-[#121212] bottom-0 py-3 rounded-t-2xl z-50 fixed md:hidden">
         <div
           className={`flex flex-col justify-center items-center py-1 px-6 ${
             isActive("/homepage")
