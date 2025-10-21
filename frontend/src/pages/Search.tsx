@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import RecentSearch from "../components/RecentSearch";
 import RecentSearchModal from "../components/modals/RecentSearchModal";
-import { ReactComponent as User } from "../assets/icons/user-solid.svg";
+import { ReactComponent as UserIcon } from "../assets/icons/user-solid.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { fetchUserImageByUsername } from "../utils/api";
 
 interface User {
   userID: number;
@@ -12,9 +13,15 @@ interface User {
   image: string;
 }
 
+interface RecentSearchItem {
+  username: string;
+  image: string;
+}
+
 const Search = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
+  const [recentSearches, setRecentSearches] = useState<RecentSearchItem[]>([]);
   const [results, setResults] = useState<User[]>([]);
   const navigate = useNavigate();
 
@@ -51,11 +58,36 @@ const Search = () => {
   );
 
   useEffect(() => {
+    const storedSearches = localStorage.getItem("recentSearches");
+
+    if (storedSearches) {
+      setRecentSearches(JSON.parse(storedSearches));
+    }
+  }, []);
+
+  useEffect(() => {
     debouncedFetchSearchResults(query);
   }, [query]);
 
-  const handleUserClick = (username: string) => {
-    navigate(`/profile/${username}`);
+  const handleUserClick = async (username: string) => {
+    try {
+      const response = await fetchUserImageByUsername(username);
+
+      const storedSearches = JSON.parse(
+        localStorage.getItem("recentSearches") || "[]"
+      );
+
+      const updatedSearches = [
+        { username, image: response },
+        ...storedSearches.filter((name: string) => name !== username),
+      ];
+
+      localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
+
+      navigate(`/profile/${username}`);
+    } catch (error) {
+      console.error("Error handling user click:", error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -93,7 +125,7 @@ const Search = () => {
                   />
                 ) : (
                   <div className="h-8 w-8 rounded-full bg-gray-500 flex items-center justify-center">
-                    <User className="h-6 w-6 text-white" />
+                    <UserIcon className="h-6 w-6 text-white" />
                   </div>
                 )}
                 <span className="text-sm">{user.username}</span>
@@ -102,9 +134,11 @@ const Search = () => {
           </div>
           <h1 className="text-xl font-semibold mt-5">Recent:</h1>
           <div>
-            <RecentSearch openModal={openModal} setOpenModal={setOpenModal} />
-            <RecentSearch openModal={openModal} setOpenModal={setOpenModal} />
-            <RecentSearch openModal={openModal} setOpenModal={setOpenModal} />
+            <RecentSearch
+              recentSearches={recentSearches}
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+            />
           </div>
           {openModal && <RecentSearchModal onClose={handleCloseModal} />}
         </div>

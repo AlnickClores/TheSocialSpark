@@ -263,3 +263,26 @@ export const checkIfStarred = async (postId: number, userId: number) => {
     return false;
   }
 };
+
+export const fetchUserImageByUsername = async (username: string) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No token found.");
+  }
+
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/users/image/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data.image;
+  } catch (error) {
+    console.error("Error fetching user image:", error);
+  }
+};
